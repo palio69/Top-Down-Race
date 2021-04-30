@@ -4,6 +4,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <ECS.hpp>
 
 
 
@@ -39,5 +40,18 @@ public:
 	void change_frame_size(const int w, const int h);
 	void change_pos(const int x, const int y);
 	void change_size(const int w, const int h);
+
+};
+
+
+
+struct c_image { image* img; };
+
+class renderer : public system {
+public:
+	renderer() { }
+	~renderer() { }
+
+	void render(SDL_Renderer* ren) const;
 
 };
