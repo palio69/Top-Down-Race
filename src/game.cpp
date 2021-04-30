@@ -34,6 +34,12 @@ void game::play() {
 
 
 
+	window win = window(this->title, W, H);
+
+	area_manager area_man = area_manager();
+
+
+
 	SDL_Event evn;
 
 	float current_time = this->get_current_time();
@@ -92,13 +98,6 @@ bool game::init() {
 	    game::running = true;
 
 	return initialized;
-}
-
-void game::register_components() const {
-	crd.register_comp<c_image>();
-	crd.register_comp<c_position>();
-	crd.register_comp<c_movement>();
-	crd.register_comp<c_player_keys>();
 }
 
 SDL_Rect game::make_rect(const vec2f xy, const vec2f wh) const {

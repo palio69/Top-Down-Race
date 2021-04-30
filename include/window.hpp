@@ -4,9 +4,7 @@
 
 #include <SDL2/SDL.h>
 #include <image.hpp>
-#include <sprite.hpp>
 #include <area.hpp>
-#include <character.hpp>
 
 
 

@@ -22,12 +22,6 @@ void window::render(const image& img) const {
 	SDL_RenderCopy(this->ren, img.get_img(), &src, &des);
 }
 
-void window::render(const sprite& spr) const {
-	SDL_Rect src = spr.get_src(),
-		des = spr.get_des();
-	SDL_RenderCopy(this->ren, spr.get_img(), &src, &des);
-}
-
 void window::render(const area_manager& area_man) const {
 
 	for (unsigned i = 0; i < area_man.get_img_areas_size(); ++i) {

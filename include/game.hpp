@@ -11,7 +11,6 @@
 #include <player.hpp>
 #include <image.hpp>
 #include <area.hpp>
-#include <character.hpp>
 #include <camera.hpp>
 #include <window.hpp>
 
