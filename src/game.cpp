@@ -34,7 +34,7 @@ struct {
     h = 64;
   const SDL_Rect src = { 0, 0, 16, 16 },
     des = { win.w / 2 - w / 2, win.h / 2 - h / 2, w, h };
-  const image sprite = { nullptr, src, des };
+  image sprite = { nullptr, src, des };
   const SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   const float fw = w,
@@ -45,7 +45,7 @@ struct {
     max_speed = 50.0f;
   const double angle = 0.0;
 
-} const player;
+} player;
 
 
 
@@ -112,11 +112,13 @@ void game::play() const {
 
 
 
+  player.sprite.tex = sprites;
+
   float current_time = this->get_current_time(),
     next_time = 0.0f,
     delta_time = 0.0f;
 
-  car car1(player.pos, player.speed, player.max_speed, player.angle, sprites, player.src, player.des, player.flip);
+  car car1(player.pos, player.speed, player.max_speed, player.angle, player.sprite, player.flip);
 
 
 

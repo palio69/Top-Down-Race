@@ -54,11 +54,11 @@ void car::update(const Uint8* key, const float delta_time) {
 
 
 
-  this->des.x = this->pos.x;
-  this->des.y = this->pos.y;
+  this->sprite.des.x = this->pos.x;
+  this->sprite.des.y = this->pos.y;
 
 }
 
 void car::render(SDL_Renderer* renderer) const {
-  SDL_RenderCopyEx(renderer, this->sprite, &(this->src), &(this->des), this->angle, nullptr, this->flip);
+  SDL_RenderCopyEx(renderer, this->sprite.tex, &(this->sprite.src), &(this->sprite.des), this->angle, nullptr, this->flip);
 }
