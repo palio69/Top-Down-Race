@@ -34,6 +34,7 @@ struct {
     h = 64;
   const SDL_Rect src = { 0, 0, 16, 16 },
     des = { win.w / 2 - w / 2, win.h / 2 - h / 2, w, h };
+  const image sprite = { nullptr, src, des };
   const SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   const float fw = w,
@@ -41,7 +42,7 @@ struct {
 
   const vec2f pos = { win.fw / 2 - fw / 2, win.fh / 2 - fh / 2 };
   const float speed = 0.0f,
-    max_speed = 25.0f;
+    max_speed = 50.0f;
   const double angle = 0.0;
 
 } const player;

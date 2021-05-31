@@ -14,6 +14,7 @@ void car::update(const Uint8* key, const float delta_time) {
     down = key[SDL_SCANCODE_DOWN],
     left = key[SDL_SCANCODE_LEFT],
     right = key[SDL_SCANCODE_RIGHT],
+    z = key[SDL_SCANCODE_Z],
 
     up_xor_down = ((up || down) && !(up && down));
 
@@ -24,7 +25,7 @@ void car::update(const Uint8* key, const float delta_time) {
       this->goal_speed = this->max_speed;
 
     if (down)
-      this->goal_speed = this->max_speed / -2.0f;
+      this->goal_speed = this->max_speed / -4.0f;
 
   } else
     this->goal_speed = 0.0f;
@@ -34,6 +35,9 @@ void car::update(const Uint8* key, const float delta_time) {
 
   if (right)
     this->angle += 0.3;
+
+  if (z)
+    this->pos = { 0.0f, 0.0f };
 
 
 
