@@ -97,7 +97,7 @@ void game::play() const {
   SDL_Window* window = nullptr;
   SDL_Renderer* renderer = nullptr;
 
-  try { this->init(window, renderer, sprites); }
+  try { this->init(window, renderer); }
 
   catch(const char* e) {
     std::cout << e;
@@ -115,7 +115,7 @@ void game::play() const {
     next_time = 0.0f,
     delta_time = 0.0f;
 
-  car car1(player.pos, player.speed, player.max_speed, player.angle, textures, player.flip);
+  car car1(player.pos, player.speed, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
 
 
 
