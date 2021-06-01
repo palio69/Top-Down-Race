@@ -25,8 +25,6 @@ struct {
   const int index = -1;
   const unsigned flags = SDL_RENDERER_ACCELERATED;
 
-  const char* sprites_path = "assets/Top Down Race Sprites.png";
-
 } const ren;
 
 struct {
@@ -34,7 +32,6 @@ struct {
     h = 64;
   const SDL_Rect src = { 0, 0, 16, 16 },
     des = { win.w / 2 - w / 2, win.h / 2 - h / 2, w, h };
-  image sprite = { nullptr, src, des };
   const SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   const float fw = w,
@@ -47,9 +44,12 @@ struct {
 
 } player;
 
+const char* path = "assets/Top Down Race Sprites.png";
+SDL_Texture* textures = nullptr;
 
 
-void game::init(SDL_Window*& window, SDL_Renderer*& renderer, SDL_Texture*& sprites) const {
+
+void game::init(SDL_Window*& window, SDL_Renderer*& renderer) const {
   std::cout << "- initializing dependencies...\n\n";
 
   if (SDL_Init(init_flags.SDL))
@@ -82,13 +82,13 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer, SDL_Texture*& spri
   }
   std::cout << "initialized renderer sucefully!\n";
 
-  sprites = IMG_LoadTexture(renderer, ren.sprites_path);
-  if (!sprites) {
-    std::cout << "failed to load sprites";
+  textures = IMG_LoadTexture(renderer, path);
+  if (!textures) {
+    std::cout << "failed to load textures";
     return;
 
   }
-  std::cout << "loaded sprites sucefully!\n";
+  std::cout << "loaded textures sucefully!\n";
 
   std::cout << "\n- initialized essential variables and objects sucefully...!\n\n";
 }
@@ -96,7 +96,6 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer, SDL_Texture*& spri
 void game::play() const {
   SDL_Window* window = nullptr;
   SDL_Renderer* renderer = nullptr;
-  SDL_Texture* sprites = nullptr;
 
   try { this->init(window, renderer, sprites); }
 
@@ -112,13 +111,11 @@ void game::play() const {
 
 
 
-  player.sprite.tex = sprites;
-
   float current_time = this->get_current_time(),
     next_time = 0.0f,
     delta_time = 0.0f;
 
-  car car1(player.pos, player.speed, player.max_speed, player.angle, player.sprite, player.flip);
+  car car1(player.pos, player.speed, player.max_speed, player.angle, textures, player.flip);
 
 
 

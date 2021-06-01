@@ -8,7 +8,7 @@
 
 class game {
 private:
-  void init(SDL_Window*& window, SDL_Renderer*& renderer, SDL_Texture*& sprites) const;
+  void init(SDL_Window*& window, SDL_Renderer*& renderer) const;
   float get_current_time() const { return SDL_GetTicks() / 1000.0f; }
 
 public:
