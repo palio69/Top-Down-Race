@@ -3,8 +3,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <vec2f.hpp>
-#include <car.hpp>
 #include <image.hpp>
+#include <map.hpp>
+#include <car.hpp>
 
 class game {
 private:

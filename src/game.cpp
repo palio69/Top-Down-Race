@@ -28,6 +28,16 @@ struct {
 } const ren;
 
 struct {
+  const std::string first_row = ".....";
+  const int tw = 64,
+    th = 64;
+
+  const SDL_Rect src1 = { 16, 0, 16, 16 },
+    src2 = { 32, 0, 16, 16 };
+
+} map;
+
+struct {
   const int w = 64,
     h = 64;
   const SDL_Rect src = { 0, 0, 16, 16 },
@@ -114,6 +124,12 @@ void game::play() const {
   float current_time = this->get_current_time(),
     next_time = 0.0f,
     delta_time = 0.0f;
+
+  const SDL_Rect null_des = { 0, 0, 0, 0 };
+
+  tile_map tm(map.first_row, map.tw, map.th);
+  tm.add_tile( { '.', { textures, map.src1, null_des } } );
+  tm.add_tile( { '-', { textures, map.src2, null_des } } );
 
   car car1(player.pos, player.speed, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
 
