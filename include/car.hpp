@@ -9,8 +9,8 @@ class car {
 private:
   vec2f pos;
   float speed,
-    goal_speed,
-    max_speed;
+    goal_speed;
+  const float max_speed;
   double angle;
 
   image sprite;
