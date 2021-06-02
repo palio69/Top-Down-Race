@@ -26,9 +26,9 @@ void tile_map::add_tile(const tile new_tile) {
 void tile_map::render(SDL_Renderer* renderer) const {
   SDL_Rect des = { 0, 0, this->tw, this->th };
 
-  for (int x = 0; x < this->h; ++x) {
+  for (int y = 0; y < this->h; ++y) {
 
-    for (int y = 0; y < this->w; ++y) {
+    for (int x = 0; x < this->w; ++x) {
 
       const char id = this->map[x + y * this->w];
       int i = this->find_tile(id);
