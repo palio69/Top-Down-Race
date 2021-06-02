@@ -28,7 +28,19 @@ struct {
 } const ren;
 
 struct {
-  const std::string first_row = ".....---...";
+  void init() {
+    first_row = ".....---....";
+    tiles +=    "....-----...";
+    tiles +=    "...---.---..";
+    tiles +=    "..---...---.";
+    tiles +=    ".-----------";
+    tiles +=    "---.......--";
+    tiles +=    "--.........-";
+    tiles +=    "-...........";
+  }
+
+  std::string first_row, tiles;
+
   const int tw = 64,
     th = 64;
 
@@ -129,7 +141,9 @@ void game::play() const {
 
   const SDL_Rect null_des = { 0, 0, 0, 0 };
 
+  map.init();
   tile_map tm(map.first_row, map.tw, map.th);
+  tm.add_to_map(map.tiles);
   tm.add_tile( { map.tile1, { textures, map.src1, null_des } } );
   tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
 
