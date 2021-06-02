@@ -19,6 +19,8 @@ private:
   int w, h;
   const int tw, th;
 
+  int find_tile(const char id) const;
+
 public:
   tile_map(
 	   const std::string first_row,
@@ -36,5 +38,7 @@ public:
 
   void add_to_map(const std::string tiles);
   void add_tile(const tile new_tile);
+
+  void render(SDL_Renderer* renderer) const;
 
 };

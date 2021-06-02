@@ -32,6 +32,8 @@ struct {
   const int tw = 64,
     th = 64;
 
+  const char tile1 = '.',
+    tile2 = '-';
   const SDL_Rect src1 = { 16, 0, 16, 16 },
     src2 = { 32, 0, 16, 16 };
 
@@ -128,8 +130,8 @@ void game::play() const {
   const SDL_Rect null_des = { 0, 0, 0, 0 };
 
   tile_map tm(map.first_row, map.tw, map.th);
-  tm.add_tile( { '.', { textures, map.src1, null_des } } );
-  tm.add_tile( { '-', { textures, map.src2, null_des } } );
+  tm.add_tile( { map.tile1, { textures, map.src1, null_des } } );
+  tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
 
   car car1(player.pos, player.speed, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
 
@@ -144,7 +146,8 @@ void game::play() const {
     SDL_RenderClear(renderer);
   };
 
-  auto render = [&renderer, &car1] {
+  auto render = [&renderer, &car1, &tm] {
+    tm.render(renderer);
     car1.render(renderer);
   };
 
