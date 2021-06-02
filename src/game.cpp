@@ -28,7 +28,7 @@ struct {
 } const ren;
 
 struct {
-  const std::string first_row = ".....";
+  const std::string first_row = ".....---...";
   const int tw = 64,
     th = 64;
 
