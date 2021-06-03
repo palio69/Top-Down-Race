@@ -66,7 +66,7 @@ struct {
     max_speed = 100.0f;
   const double angle = 0.0;
 
-} player;
+} const player;
 
 const char* path = "assets/Top Down Race Sprites.png";
 SDL_Texture* textures = nullptr;
