@@ -63,7 +63,7 @@ struct {
 
   const vec2f pos = { win.fw / 2 - fw / 2, win.fh / 2 - fh / 2 };
   const float speed = 0.0f,
-    max_speed = 50.0f;
+    max_speed = 100.0f;
   const double angle = 0.0;
 
 } player;
