@@ -62,8 +62,7 @@ struct {
     fh = h;
 
   const vec2f pos = { win.fw / 2 - fw / 2, win.fh / 2 - fh / 2 };
-  const float speed = 0.0f,
-    max_speed = 100.0f;
+  const float max_speed = 100.0f;
   const double angle = 0.0;
 
 } const player;
@@ -147,7 +146,7 @@ void game::play() const {
   tm.add_tile( { map.tile1, { textures, map.src1, null_des } } );
   tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
 
-  car car1(player.pos, player.speed, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
+  car car1(player.pos, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
 
 
 

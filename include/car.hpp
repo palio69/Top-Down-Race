@@ -21,14 +21,14 @@ private:
 public:
   car(
       const vec2f pos,
-      const float speed, const float max_speed,
+      const float max_speed,
       const double angle,
 
       const image sprite,
       const SDL_RendererFlip flip
       ) :
     pos(pos),
-    speed(speed), goal_speed(0.0f), max_speed(max_speed),
+    speed(0.0f), goal_speed(0.0f), max_speed(max_speed),
     angle(angle),
     cam(pos),
 
