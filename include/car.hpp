@@ -13,7 +13,6 @@ private:
     goal_speed;
   const float max_speed;
   double angle;
-  camera cam;
 
   image sprite;
   const SDL_RendererFlip flip;
@@ -30,13 +29,12 @@ public:
     pos(pos),
     speed(0.0f), goal_speed(0.0f), max_speed(max_speed),
     angle(angle),
-    cam(pos),
 
     sprite(sprite),
     flip(flip) { }
   ~car() { SDL_DestroyTexture(this->sprite.tex); }
 
-  camera get_cam() const { return this->cam; }
+  vec2f get_pos() const { return this->pos; }
 
   void update(const Uint8* key, const float delta_time);
   void render(SDL_Renderer* renderer) const;

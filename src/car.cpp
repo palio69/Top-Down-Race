@@ -55,11 +55,6 @@ void car::update(const Uint8* key, const float delta_time) {
   this->pos.x += speed * std::sin(to_radians(this->angle)) * limiter;
   this->pos.y -= speed * std::cos(to_radians(this->angle)) * limiter;
 
-
-
-  this->sprite.des.x = this->pos.x;
-  this->sprite.des.y = this->pos.y;
-
 }
 
 void car::render(SDL_Renderer* renderer) const {
