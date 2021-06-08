@@ -73,6 +73,10 @@ SDL_Texture* textures = nullptr;
 
 
 void game::init(SDL_Window*& window, SDL_Renderer*& renderer) const {
+  std::cout << "-------| Top Down Race |-------\n\n" << std::endl;
+
+
+
   std::cout << "- initializing dependencies...\n\n";
 
   if (SDL_Init(init_flags.SDL))
@@ -83,7 +87,7 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) const {
     throw "ERROR: could not initialize SDL_image library\n";
   std::cout << "initialized SDL_image sucefully!\n";
 
-  std::cout << "\n- initialized dependecies sucefully...!\n\n";
+  std::cout << "\n- initialized dependecies sucefully!\n" << std::endl;
 
 
 
@@ -113,7 +117,7 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) const {
   }
   std::cout << "loaded textures sucefully!\n";
 
-  std::cout << "\n- initialized essential variables and objects sucefully...!\n\n";
+  std::cout << "\n- initialized essential variables and objects sucefully!\n" << std::endl;
 }
 
 void game::play() const {
@@ -123,11 +127,11 @@ void game::play() const {
   try { this->init(window, renderer); }
 
   catch(const char* e) {
-    std::cout << e;
+    std::cout << e << std::endl;
     return;
 
   } catch(...) {
-    std::cout << "an unknown error occured\n";
+    std::cout << "an unknown error occured" << std::endl;
     return;
 
   }
@@ -200,7 +204,7 @@ void game::play() const {
 
 
 
-  std::cout << "\n- exiting...\n";
+  std::cout << "\n- exiting..." << std::endl;
   IMG_Quit();
   SDL_Quit();
 }
