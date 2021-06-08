@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
+#include <camera.hpp>
 #include <image.hpp>
 
 struct tile {
@@ -39,6 +40,6 @@ public:
   void add_to_map(const std::string tiles);
   void add_tile(const tile new_tile);
 
-  void render(SDL_Renderer* renderer) const;
+  void render(SDL_Renderer* renderer, const camera cam) const;
 
 };

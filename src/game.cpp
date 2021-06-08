@@ -147,11 +147,13 @@ void game::play() const {
   tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
 
   car car1(player.pos, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
+  camera cam1(player.pos);
 
 
 
-  auto update = [&car1] (const Uint8* key, const float delta_time) {
+  auto update = [&car1, &cam1] (const Uint8* key, const float delta_time) {
     car1.update(key, delta_time);
+    cam1.update(car1.get_pos());
   };
 
   auto clear_window = [&renderer] {
@@ -159,8 +161,8 @@ void game::play() const {
     SDL_RenderClear(renderer);
   };
 
-  auto render = [&renderer, &car1, &tm] {
-    tm.render(renderer);
+  auto render = [&renderer, &tm, &car1, &cam1] {
+    tm.render(renderer, cam1);
     car1.render(renderer);
   };
 
