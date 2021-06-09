@@ -7,11 +7,31 @@
 struct vec2f {
   float x, y;
 
-  constexpr vec2f& operator =(const vec2f vec);
-  constexpr vec2f& operator +=(const vec2f vec);
-  constexpr vec2f& operator -=(const vec2f vec);
-  constexpr vec2f& operator *=(const vec2f vec);
-  constexpr vec2f& operator /=(const vec2f vec);
+  constexpr vec2f& operator =(const vec2f vec) {
+    this->x = vec.x;
+    this->y = vec.y;
+    return *this;
+  }
+  constexpr vec2f& operator +=(const vec2f vec) {
+    this->x += vec.x;
+    this->y += vec.y;
+    return *this;
+  }
+  constexpr vec2f& operator -=(const vec2f vec) {
+    this->x -= vec.x;
+    this->y -= vec.y;
+    return *this;
+  }
+  constexpr vec2f& operator *=(const vec2f vec) {
+    this->x *= vec.x;
+    this->y *= vec.y;
+    return *this;
+  }
+  constexpr vec2f& operator /=(const vec2f vec) {
+    this->x /= vec.x;
+    this->y /= vec.y;
+    return *this;
+  }
 
 };
 
@@ -56,11 +76,11 @@ inline constexpr bool operator <(const vec2f lhs, const vec2f rhs) {
 }
 
 inline constexpr bool operator >=(const vec2f lhs, const vec2f rhs) {
-  return (lhs.x + lhs.y > rhs.x + rhs.y);
+  return (lhs.x + lhs.y >= rhs.x + rhs.y);
 }
 
 inline constexpr bool operator <=(const vec2f lhs, const vec2f rhs) {
-  return (lhs.x + lhs.y < rhs.x + rhs.y);
+  return (lhs.x + lhs.y <= rhs.x + rhs.y);
 }
 
 

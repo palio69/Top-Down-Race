@@ -21,6 +21,6 @@ void camera::update(const vec2f new_ref) {
 
 
   this->camera_pos = final_camera_pos;
-  this->ref = new_ref;
+  this->ref_pos = new_ref;
 
 }
