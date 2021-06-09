@@ -1,30 +1,30 @@
 #include <vec2f.hpp>
 
-vec2f& vec2f::operator =(const vec2f vec) {
+constexpr vec2f& vec2f::operator =(const vec2f vec) {
   this->x = vec.x;
   this->y = vec.y;
   return *this;
 }
 
-vec2f& vec2f::operator +=(const vec2f vec) {
+constexpr vec2f& vec2f::operator +=(const vec2f vec) {
   this->x += vec.x;
   this->y += vec.y;
   return *this;
 }
 
-vec2f& vec2f::operator -=(const vec2f vec) {
+constexpr vec2f& vec2f::operator -=(const vec2f vec) {
   this->x -= vec.x;
   this->y -= vec.y;
   return *this;
 }
 
-vec2f& vec2f::operator *=(const vec2f vec) {
+constexpr vec2f& vec2f::operator *=(const vec2f vec) {
   this->x *= vec.x;
   this->y *= vec.y;
   return *this;
 }
 
-vec2f& vec2f::operator /=(const vec2f vec) {
+constexpr vec2f& vec2f::operator /=(const vec2f vec) {
   this->x /= vec.x;
   this->y /= vec.y;
   return *this;

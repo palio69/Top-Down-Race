@@ -7,11 +7,11 @@
 struct vec2f {
   float x, y;
 
-  vec2f& operator =(const vec2f vec);
-  vec2f& operator +=(const vec2f vec);
-  vec2f& operator -=(const vec2f vec);
-  vec2f& operator *=(const vec2f vec);
-  vec2f& operator /=(const vec2f vec);
+  constexpr vec2f& operator =(const vec2f vec);
+  constexpr vec2f& operator +=(const vec2f vec);
+  constexpr vec2f& operator -=(const vec2f vec);
+  constexpr vec2f& operator *=(const vec2f vec);
+  constexpr vec2f& operator /=(const vec2f vec);
 
 };
 
