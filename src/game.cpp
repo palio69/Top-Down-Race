@@ -67,6 +67,21 @@ struct {
 
 } const player;
 
+struct {
+  void init() {
+    float w = map.first_row.size(),
+      h = map.tiles.size() / w;
+
+    xy_limit = { 0.0f, 0.0f };
+    wh_limit = { w, h };
+  }
+
+  vec2f xy_limit, wh_limit;
+  const vec2f window_wh = { win.fw, win.fh },
+    ref_pos = player.pos;
+
+} cam;
+
 const char* path = "assets/Top Down Race Sprites.png";
 SDL_Texture* textures = nullptr;
 
@@ -138,20 +153,22 @@ void game::play() const {
 
 
 
+  map.init();
+  cam.init();
+
   float current_time = this->get_current_time(),
     next_time = 0.0f,
     delta_time = 0.0f;
 
   const SDL_Rect null_des = { 0, 0, 0, 0 };
 
-  map.init();
   tile_map tm(map.first_row, map.tw, map.th);
   tm.add_to_map(map.tiles);
   tm.add_tile( { map.tile1, { textures, map.src1, null_des } } );
   tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
 
   car car1(player.pos, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
-  camera cam1(player.pos);
+  camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_pos);
 
 
 
