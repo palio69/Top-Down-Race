@@ -8,10 +8,9 @@ void car::update(const Uint8* key, const float delta_time) {
     return angle * pi / 180;
   };
 
-  const float friction = 12.5f,
-    acceleration = delta_time * friction,
-    limiter = 0.05f;
-  const double angle_modifier = 0.3;
+  const float friction = 250.0f,
+    acceleration = delta_time * friction;
+  const double angle_modifier = 180.0f * delta_time;
 
   const bool up = key[SDL_SCANCODE_UP],
     down = key[SDL_SCANCODE_DOWN],
@@ -48,12 +47,12 @@ void car::update(const Uint8* key, const float delta_time) {
     this->speed += acceleration;
 
   if (this->speed > this->goal_speed)
-    this->speed -= acceleration;
+    this->speed -= acceleration * 2.0f;
 
 
 
-  this->pos.x += speed * std::sin(to_radians(this->angle)) * limiter;
-  this->pos.y -= speed * std::cos(to_radians(this->angle)) * limiter;
+  this->pos.x += speed * delta_time * std::sin(to_radians(this->angle));
+  this->pos.y -= speed * delta_time * std::cos(to_radians(this->angle));
 
 }
 
