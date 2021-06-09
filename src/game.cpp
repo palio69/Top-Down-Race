@@ -29,14 +29,15 @@ struct {
 
 struct {
   void init() {
-    first_row = ".....---....";
-    tiles +=    "....-----...";
-    tiles +=    "...---.---..";
-    tiles +=    "..---...---.";
-    tiles +=    ".-----------";
-    tiles +=    "---.......--";
-    tiles +=    "--.........-";
-    tiles +=    "-...........";
+    first_row = ".....---......";
+    tiles +=    "....-----.....";
+    tiles +=    "...---.---....";
+    tiles +=    "..---...---...";
+    tiles +=    ".-----------..";
+    tiles +=    "---.......--..";
+    tiles +=    "--.........-..";
+    tiles +=    "-.............";
+    tiles +=    "-.............";
   }
 
   std::string first_row, tiles;
@@ -69,7 +70,7 @@ struct {
 
 struct {
   void init() {
-    float w = map.first_row.size() * map.tw,
+    const float w = map.first_row.size() * map.tw,
       h = (map.first_row.size() + map.tiles.size()) / w * map.th;
 
     xy_limit = { 0.0f, 0.0f };

@@ -15,14 +15,14 @@ void camera::update(const vec2f new_ref) {
   if (new_camera_pos.x < this->xy_limit.x)
     final_camera_pos.x = this->xy_limit.x;
 
-  else if (new_camera_wh.x > xy2_limit.x)
-    final_camera_pos.x = xy2_distance.x;
+  //else if (new_camera_wh.x > xy2_limit.x)
+  //final_camera_pos.x = xy2_distance.x;
 
   if (new_camera_pos.y < this->xy_limit.y)
     final_camera_pos.y = this->xy_limit.y;
 
-  else if (new_camera_wh.y > xy2_limit.y)
-    final_camera_pos.y = xy2_distance.y;
+  //else if (new_camera_wh.y > xy2_limit.y)
+  //final_camera_pos.y = xy2_distance.y;
 
 
 
