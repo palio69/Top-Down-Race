@@ -54,6 +54,10 @@ void car::update(const Uint8* key, const float delta_time) {
   this->pos.x += speed * delta_time * std::sin(to_radians(this->angle));
   this->pos.y -= speed * delta_time * std::cos(to_radians(this->angle));
 
+  this->cam.update(this->pos);
+
+  this->
+
 }
 
 void car::render(SDL_Renderer* renderer) const {

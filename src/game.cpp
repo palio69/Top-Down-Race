@@ -168,14 +168,16 @@ void game::play() const {
   tm.add_tile( { map.tile1, { textures, map.src1, null_des } } );
   tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
 
-  car car1(player.pos, player.max_speed, player.angle, { textures, player.src, player.des }, player.flip);
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_pos);
+  car car1(
+	   player.pos, player.max_speed, player.angle, cam1,
+	   { textures, player.src, player.des }, player.flip
+	   );
 
 
 
   auto update = [&car1, &cam1] (const Uint8* key, const float delta_time) {
     car1.update(key, delta_time);
-    cam1.update(car1.get_pos());
   };
 
   auto clear_window = [&renderer] {

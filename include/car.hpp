@@ -13,6 +13,7 @@ private:
     goal_speed;
   const float max_speed;
   double angle;
+  camera& cam;
 
   image sprite;
   const SDL_RendererFlip flip;
@@ -22,6 +23,7 @@ public:
       const vec2f pos,
       const float max_speed,
       const double angle,
+      camera& cam,
 
       const image sprite,
       const SDL_RendererFlip flip
@@ -29,6 +31,7 @@ public:
     pos(pos),
     speed(0.0f), goal_speed(0.0f), max_speed(max_speed),
     angle(angle),
+    cam(cam),
 
     sprite(sprite),
     flip(flip) { }
