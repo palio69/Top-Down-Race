@@ -24,12 +24,19 @@ void tile_map::add_tile(const tile new_tile) {
 }
 
 void tile_map::render(SDL_Renderer* renderer, const camera cam) const {
-  const vec2f cam_pos = cam.get_camera_pos();
+  const vec2f camera_pos = cam.get_camera_pos(),
+    window_wh = cam.get_window_wh(),
+    camera_wh = camera_pos + window_wh;
   SDL_Rect des = { 0, 0, this->tw, this->th };
 
-  for (int y = 0; y < this->h; ++y) {
+  const int min_y = camera_pos.y / this->th,
+    max_y = camera_wh.y + this->th / this->th,
+    min_x = camera_pos.x / this->tw,
+    max_x = camera_wh.x + this->tw / this->tw;
 
-    for (int x = 0; x < this->w; ++x) {
+  for (int y = min_y; y < max_y; ++y) {
+
+    for (int x = min_x; x < max_x; ++x) {
 
       const char id = this->map[x + y * this->w];
       int i = this->find_tile(id);
@@ -38,8 +45,8 @@ void tile_map::render(SDL_Renderer* renderer, const camera cam) const {
 	continue;
 
       const auto& t = this->tiles[i];
-      des.x = x * des.w - cam_pos.x;
-      des.y = y * des.h - cam_pos.y;
+      des.x = x * des.w - camera_pos.x;
+      des.y = y * des.h - camera_pos.y;
 
       SDL_RenderCopy(renderer, t.sprite.tex, &(t.sprite.src), &des);
 

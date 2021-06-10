@@ -21,6 +21,7 @@ public:
     ref_pos(ref_pos),
     camera_pos(camera_pos) { }
 
+  vec2f get_window_wh() const { return this->window_wh; }
   vec2f get_camera_pos() const { return this->camera_pos; }
 
   void update(const vec2f new_ref);
