@@ -8,8 +8,9 @@ void car::update(const Uint8* key, const float delta_time) {
     return angle * pi / 180;
   };
 
-  const float friction = 250.0f,
-    acceleration = delta_time * friction;
+  const float friction = 100.0f,
+    acceleration = delta_time * friction,
+    deceleration = acceleration * 2.0f;
   const double angle_modifier = 180.0f * delta_time;
 
   const bool up = key[SDL_SCANCODE_UP],
@@ -44,10 +45,10 @@ void car::update(const Uint8* key, const float delta_time) {
 
 
   if (this->speed < this->goal_speed)
-    this->speed += acceleration;
+      this->speed += acceleration;
 
   if (this->speed > this->goal_speed)
-    this->speed -= acceleration * 2.0f;
+      this->speed -= deceleration;
 
 
 
