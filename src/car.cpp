@@ -56,8 +56,6 @@ void car::update(const Uint8* key, const float delta_time) {
 
   this->cam.update(this->pos);
 
-  this->
-
 }
 
 void car::render(SDL_Renderer* renderer) const {

@@ -70,11 +70,11 @@ struct {
 
 struct {
   void init() {
-    const float w = map.first_row.size() * map.tw,
-      h = (map.first_row.size() + map.tiles.size()) / w * map.th;
+    const float w = map.first_row.size(),
+      h = (map.first_row.size() + map.tiles.size()) / w;
 
     xy_limit = { 0.0f, 0.0f };
-    wh_limit = { w, h };
+    wh_limit = { w * map.tw, h * map.th };
   }
 
   vec2f xy_limit, wh_limit;
