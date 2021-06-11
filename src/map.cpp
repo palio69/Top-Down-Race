@@ -30,9 +30,20 @@ void tile_map::render(SDL_Renderer* renderer, const camera cam) const {
   SDL_Rect des = { 0, 0, this->tw, this->th };
 
   const int min_y = camera_pos.y / this->th,
-    max_y = camera_wh.y + this->th / this->th,
-    min_x = camera_pos.x / this->tw,
-    max_x = camera_wh.x + this->tw / this->tw;
+    min_x = camera_pos.x / this->tw;
+
+  int max_y = camera_wh.y / this->th,
+    max_x = camera_wh.x / this->tw;
+
+
+
+  if (++max_y > this->h)
+    max_y = this->h;
+
+  if (++max_x > this->w)
+    max_x = this->w;
+
+
 
   for (int y = min_y; y < max_y; ++y) {
 
