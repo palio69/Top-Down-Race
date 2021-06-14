@@ -5,6 +5,7 @@
 #include <vec2f.hpp>
 #include <image.hpp>
 #include <camera.hpp>
+#include <map.hpp>
 
 class car {
 private:
@@ -13,6 +14,8 @@ private:
     goal_speed;
   const float max_speed;
   double angle;
+
+  tile_map* current_map;
   camera& cam;
 
   image sprite;
@@ -23,6 +26,8 @@ public:
       const vec2f pos,
       const float max_speed,
       const double angle,
+
+      tile_map* current_map,
       camera& cam,
 
       const image sprite,
@@ -31,6 +36,8 @@ public:
     pos(pos),
     speed(0.0f), goal_speed(0.0f), max_speed(max_speed),
     angle(angle),
+
+    current_map(current_map),
     cam(cam),
 
     sprite(sprite),

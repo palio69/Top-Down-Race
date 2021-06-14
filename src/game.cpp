@@ -203,7 +203,8 @@ void game::play() const {
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_pos);
   car car1(
-	   player.pos, player.max_speed, player.angle, cam1,
+	   player.pos, player.max_speed, player.angle,
+	   &tm, cam1,
 	   { textures, player.src, player.des }, player.flip
 	   );
 
