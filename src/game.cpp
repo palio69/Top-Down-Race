@@ -96,57 +96,75 @@ struct {
 
 } cam;
 
-const char* path = "assets/Top Down Race Sprites.png";
+const char path[] = "assets/Top Down Race Sprites.png";
 SDL_Texture* textures = nullptr;
 
 
 
 void game::init(SDL_Window*& window, SDL_Renderer*& renderer) const {
+  auto init_dependencies = [] {
+    bool initialized = true;
+
+    std::cout << "--- initializing dependencies...\n";
+
+    if (SDL_Init(init_flags.SDL)) {
+      std::cout << "ERROR: could not initialize SDL library\n";
+      initialized = false;
+    } else
+      std::cout << "initialized SDL sucefully!\n";
+
+    if (IMG_Init(init_flags.IMG) != init_flags.IMG) {
+      std::cout << "ERROR: could not initialize SDL_image library\n";
+      initialized = false;
+    } else
+      std::cout << "initialized SDL_image sucefully!\n";
+
+    return initialized;
+
+  };
+
+  auto init_objs = [&window, &renderer] {
+    bool initialized = true;
+
+    std::cout << "--- initializing essential variables and objects...\n";
+
+    window = SDL_CreateWindow(win.title, win.x, win.y, win.w, win.h, win.flags);
+    if (!window) {
+      std::cout << "failed to initialize window\n";
+      initialized = false;
+    } else
+      std::cout << "initialized window sucefully!\n";
+
+    renderer = SDL_CreateRenderer(window, ren.index, ren.flags);
+    if (!renderer) {
+      std::cout << "failed to initialize renderer\n";
+      initialized = false;
+    } else
+      std::cout << "initialized renderer sucefully!\n";
+
+    textures = IMG_LoadTexture(renderer, path);
+    if (!textures) {
+      std::cout << "failed to load textures";
+      initialized = false;
+    } else
+      std::cout << "loaded textures sucefully!\n";
+
+    return initialized;
+
+  };
+
+
+
   std::cout << "-------| Top Down Race |-------\n\n" << std::endl;
 
+  if (!init_dependencies())
+    throw "--- failed to initialize dependecies";
+  std::cout << "--- initialized dependecies sucefully!\n\n" << std::endl;
 
+  if (!init_objs())
+    throw "--- failed to initialize essential variables and objects";
+  std::cout << "--- initialized essential variables and objects sucefully!\n\n" << std::endl;
 
-  std::cout << "- initializing dependencies...\n\n";
-
-  if (SDL_Init(init_flags.SDL))
-    throw "ERROR: could not initialize SDL library\n";
-  std::cout << "initialized SDL sucefully!\n";
-
-  if (IMG_Init(init_flags.IMG) != init_flags.IMG)
-    throw "ERROR: could not initialize SDL_image library\n";
-  std::cout << "initialized SDL_image sucefully!\n";
-
-  std::cout << "\n- initialized dependecies sucefully!\n" << std::endl;
-
-
-
-  std::cout << "\n- initializing essential variables and objects...\n\n";
-
-  window = SDL_CreateWindow(win.title, win.x, win.y, win.w, win.h, win.flags);
-  if (!window) {
-    std::cout << "failed to initialize window\n";
-    return;
-
-  }
-  std::cout << "initialized window sucefully!\n";
-
-  renderer = SDL_CreateRenderer(window, ren.index, ren.flags);
-  if (!renderer) {
-    std::cout << "failed to initialize renderer\n";
-    return;
-
-  }
-  std::cout << "initialized renderer sucefully!\n";
-
-  textures = IMG_LoadTexture(renderer, path);
-  if (!textures) {
-    std::cout << "failed to load textures";
-    return;
-
-  }
-  std::cout << "loaded textures sucefully!\n";
-
-  std::cout << "\n- initialized essential variables and objects sucefully!\n" << std::endl;
 }
 
 void game::play() const {
@@ -164,6 +182,8 @@ void game::play() const {
     return;
 
   }
+
+  std::cout << "< BEGIN >\n" << std::endl;
 
 
 
@@ -237,7 +257,7 @@ void game::play() const {
 
 
 
-  std::cout << "\n- exiting..." << std::endl;
+  std::cout << "\n< EXIT >" << std::endl;
   IMG_Quit();
   SDL_Quit();
 }
