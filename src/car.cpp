@@ -8,8 +8,8 @@ void car::update(const Uint8* key, const float delta_time) {
     return angle * pi / 180;
   };
 
-  const float friction = 100.0f,
-    acceleration = delta_time * friction,
+  const float friction = 1.05f,
+    acceleration = 250.0f * delta_time,
     deceleration = acceleration * 2.0f;
   const double angle_modifier = 180.0f * delta_time;
 
@@ -45,10 +45,10 @@ void car::update(const Uint8* key, const float delta_time) {
 
 
   if (this->speed < this->goal_speed)
-      this->speed += acceleration;
+      this->speed += acceleration * friction;
 
   if (this->speed > this->goal_speed)
-      this->speed -= deceleration;
+      this->speed -= deceleration * friction;
 
 
 
