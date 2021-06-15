@@ -9,7 +9,7 @@ void camera::update(const vec2f new_ref) {
 
     window_middle = this->window_wh / 2.0f - 32.0f,
     ref_xy_limit = this->xy_limit + window_middle,
-    ref_xy2_limit = xy2_limit + window_middle;
+    ref_xy2_limit = xy2_limit - window_middle;
 
   vec2f final_camera_pos = new_camera_pos;
 
