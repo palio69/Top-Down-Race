@@ -7,9 +7,7 @@ void camera::update(const vec2f new_ref) {
     xy2_limit = this->xy_limit + this->wh_limit,
     xy2_distance = xy2_limit - this->window_wh,
 
-    vec2 = { 2.0f, 2.0f },
-    vec32 = { 32.0f, 32.0f },
-    window_middle = this->window_wh / vec2 - vec32,
+    window_middle = this->window_wh / 2.0f - 32.0f,
     ref_xy_limit = this->xy_limit + window_middle,
     ref_xy2_limit = xy2_limit + window_middle;
 
