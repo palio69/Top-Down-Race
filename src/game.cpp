@@ -162,18 +162,18 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
       std::cout << "ERROR: could not initialize SDL library\n";
       initialized = false;
     } else
-      std::cout << "initialized SDL sucefully!\n";
+      std::cout << "initialized SDL successfully!\n";
 
     if (IMG_init) {
       std::cout << "ERROR: could not initialize SDL_image library\n";
       initialized = false;
     } else
-      std::cout << "initialized SDL_image sucefully!\n";
+      std::cout << "initialized SDL_image successfully!\n";
 
 
 
     if (initialized)
-      std::cout << "--- initialized dependecies sucefully!\n\n" << std::endl;
+      std::cout << "--- initialized dependecies successfully!\n\n" << std::endl;
 
     return initialized;
 
@@ -194,24 +194,24 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
       std::cout << "failed to initialize window\n";
       initialized = false;
     } else
-      std::cout << "initialized window sucefully!\n";
+      std::cout << "initialized window successfully!\n";
 
     if (!renderer) {
       std::cout << "failed to initialize renderer\n";
       initialized = false;
     } else
-      std::cout << "initialized renderer sucefully!\n";
+      std::cout << "initialized renderer successfully!\n";
 
     if (!textures) {
       std::cout << "failed to load textures\n";
       initialized = false;
     } else
-      std::cout << "loaded textures sucefully!\n";
+      std::cout << "loaded textures successfully!\n";
 
 
 
     if (initialized)
-      std::cout << "--- initialized essential variables and objects sucefully!\n\n" << std::endl;
+      std::cout << "--- initialized essential variables and objects successfully!\n\n" << std::endl;
 
     return initialized;
 
