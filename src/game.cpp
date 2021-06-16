@@ -165,6 +165,9 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
     } else
       std::cout << "initialized SDL_image sucefully!\n";
 
+    if (initialized)
+      std::cout << "--- initialized dependecies sucefully!\n\n" << std::endl;
+
     return initialized;
 
   };
@@ -195,6 +198,9 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
     } else
       std::cout << "loaded textures sucefully!\n";
 
+    if (initialized)
+      std::cout << "--- initialized essential variables and objects sucefully!\n\n" << std::endl;
+
     return initialized;
 
   };
@@ -205,11 +211,9 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
 
   if (!init_dependencies())
     throw "--- failed to initialize dependecies";
-  std::cout << "--- initialized dependecies sucefully!\n\n" << std::endl;
 
   if (!init_objs())
     throw "--- failed to initialize essential variables and objects";
-  std::cout << "--- initialized essential variables and objects sucefully!\n\n" << std::endl;
 
 }
 
@@ -229,9 +233,9 @@ void game::play() {
 
   }
 
+
+
   std::cout << "< BEGIN >\n" << std::endl;
-
-
 
   map.init();
   cam.init();
@@ -305,6 +309,11 @@ void game::play() {
 
 
   std::cout << "\n< EXIT >" << std::endl;
+
+  SDL_DestroyTexture(textures);
+  SDL_DestroyWindow(window);
+  SDL_DestroyRenderer(renderer);
+
   IMG_Quit();
   SDL_Quit();
 }
