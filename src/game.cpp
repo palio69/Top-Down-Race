@@ -149,21 +149,28 @@ SDL_Texture* textures = nullptr;
 
 void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
   auto init_dependencies = [] {
-    bool initialized = true;
-
     std::cout << "--- initializing dependencies...\n";
 
-    if (SDL_Init(init_flags.SDL)) {
+    const bool SDL_init = SDL_Init(init_flags.SDL),
+    IMG_init = IMG_Init(init_flags.IMG) != init_flags.IMG;
+
+    bool initialized = true;
+
+
+
+    if (SDL_init) {
       std::cout << "ERROR: could not initialize SDL library\n";
       initialized = false;
     } else
       std::cout << "initialized SDL sucefully!\n";
 
-    if (IMG_Init(init_flags.IMG) != init_flags.IMG) {
+    if (IMG_init) {
       std::cout << "ERROR: could not initialize SDL_image library\n";
       initialized = false;
     } else
       std::cout << "initialized SDL_image sucefully!\n";
+
+
 
     if (initialized)
       std::cout << "--- initialized dependecies sucefully!\n\n" << std::endl;
@@ -173,30 +180,35 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
   };
 
   auto init_objs = [&window, &renderer] {
-    bool initialized = true;
-
     std::cout << "--- initializing essential variables and objects...\n";
 
     window = SDL_CreateWindow(win.title, win.x, win.y, win.w, win.h, win.flags);
+    renderer = SDL_CreateRenderer(window, ren.index, ren.flags);
+    textures = IMG_LoadTexture(renderer, path);
+
+    bool initialized = true;
+
+
+
     if (!window) {
       std::cout << "failed to initialize window\n";
       initialized = false;
     } else
       std::cout << "initialized window sucefully!\n";
 
-    renderer = SDL_CreateRenderer(window, ren.index, ren.flags);
     if (!renderer) {
       std::cout << "failed to initialize renderer\n";
       initialized = false;
     } else
       std::cout << "initialized renderer sucefully!\n";
 
-    textures = IMG_LoadTexture(renderer, path);
     if (!textures) {
-      std::cout << "failed to load textures";
+      std::cout << "failed to load textures\n";
       initialized = false;
     } else
       std::cout << "loaded textures sucefully!\n";
+
+
 
     if (initialized)
       std::cout << "--- initialized essential variables and objects sucefully!\n\n" << std::endl;
