@@ -1,7 +1,6 @@
 #include <game.hpp>
 
 int main(int argc, char* argv[]) {
-  game* g = new game;
-  g->play();
+  game::play();
   return 0;
 }

@@ -147,7 +147,7 @@ SDL_Texture* textures = nullptr;
 
 
 
-void game::init(SDL_Window*& window, SDL_Renderer*& renderer) const {
+void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
   auto init_dependencies = [] {
     bool initialized = true;
 
@@ -213,11 +213,11 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) const {
 
 }
 
-void game::play() const {
+void game::play() {
   SDL_Window* window = nullptr;
   SDL_Renderer* renderer = nullptr;
 
-  try { this->init(window, renderer); }
+  try { game::init(window, renderer); }
 
   catch(const char* e) {
     std::cout << e << std::endl;
@@ -236,7 +236,7 @@ void game::play() const {
   map.init();
   cam.init();
 
-  float current_time = this->get_current_time(),
+  float current_time = game::get_current_time(),
     next_time = 0.0f,
     delta_time = 0.0f;
 
@@ -281,7 +281,7 @@ void game::play() const {
 
   while (running) {
 
-    next_time = this->get_current_time();
+    next_time = game::get_current_time();
     delta_time = next_time - current_time;
     current_time = next_time;
 
