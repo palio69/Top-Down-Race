@@ -2,6 +2,9 @@
 
 
 
+const char path[] = "assets/Top Down Race Sprites.png";
+SDL_Texture* textures = nullptr;
+
 struct {
   const int SDL = SDL_INIT_EVERYTHING;
   const int IMG = IMG_INIT_PNG;
@@ -18,12 +21,18 @@ struct {
 
   const float fw = w,
     fh = h;
+  const vec2f wh = { fw, fh };
 
 } const win;
 
 struct {
   const int index = -1;
   const unsigned flags = SDL_RENDERER_ACCELERATED;
+
+  const int r = 0,
+    g = 0,
+    b = 0,
+    a = 255;
 
 } const ren;
 
@@ -118,8 +127,9 @@ struct {
 
   const float fw = w,
     fh = h;
+  const vec2f wh = { fw, fh },
 
-  const vec2f pos = { win.fw / 2 - fw / 2, win.fh / 2 - fh / 2 };
+    pos = win.wh / 2.0f - wh / 2.0f;
   const float max_speed = 1250.0f;
   const double angle = 0.0;
 
@@ -137,13 +147,10 @@ struct {
   }
 
   vec2f xy_limit, wh_limit;
-  const vec2f window_wh = { win.fw, win.fh },
+  const vec2f window_wh = win.wh,
     ref_pos = player.pos;
 
 } cam;
-
-const char path[] = "assets/Top Down Race Sprites.png";
-SDL_Texture* textures = nullptr;
 
 
 
@@ -277,7 +284,7 @@ void game::play() {
   };
 
   auto clear_window = [&renderer] {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, ren.r, ren.g, ren.b, ren.a);
     SDL_RenderClear(renderer);
   };
 
