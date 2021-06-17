@@ -13,22 +13,28 @@ void car::update(const Uint8* key, const float delta_time) {
     deceleration = acceleration * 2.0f;
   const double angle_modifier = 180.0f * delta_time;
 
+  float booster = 1.0f;
+
   const bool up = key[SDL_SCANCODE_UP],
     down = key[SDL_SCANCODE_DOWN],
     left = key[SDL_SCANCODE_LEFT],
     right = key[SDL_SCANCODE_RIGHT],
+    n = key[SDL_SCANCODE_N],
     z = key[SDL_SCANCODE_Z],
 
     up_xor_down = ((up || down) && !(up && down));
 
 
 
+  if (n)
+    booster = 1.75f;
+
   if (up_xor_down) {
     if (up)
-      this->goal_speed = this->max_speed;
+      this->goal_speed = this->max_speed * booster;
 
     if (down)
-      this->goal_speed = this->max_speed / -4.0f;
+      this->goal_speed = this->max_speed / -4.0f * booster;
 
   } else
     this->goal_speed = 0.0f;
@@ -45,10 +51,10 @@ void car::update(const Uint8* key, const float delta_time) {
 
 
   if (this->speed < this->goal_speed)
-      this->speed += acceleration * friction;
+      this->speed += acceleration * friction * booster;
 
   if (this->speed > this->goal_speed)
-      this->speed -= deceleration * friction;
+      this->speed -= deceleration * friction * booster;
 
 
 
