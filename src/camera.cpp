@@ -1,7 +1,7 @@
 #include <camera.hpp>
 
 void camera::update(const vec2f new_ref) {
-  const vec2f refs_distance = new_ref - this->ref_pos,
+  const vec2f refs_distance = new_ref - this->ref_xy,
     new_camera_pos = this->camera_pos + refs_distance,
     new_camera_wh = new_camera_pos + this->window_wh,
     xy2_limit = this->xy_limit + this->wh_limit,
@@ -42,5 +42,5 @@ void camera::update(const vec2f new_ref) {
 
 
   this->camera_pos = final_camera_pos;
-  this->ref_pos = new_ref;
+  this->ref_xy = new_ref;
 }

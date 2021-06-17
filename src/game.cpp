@@ -148,7 +148,8 @@ struct {
 
   vec2f xy_limit, wh_limit;
   const vec2f window_wh = win.wh,
-    ref_pos = player.pos;
+    ref_xy = player.pos,
+    ref_wh = player.wh;
 
 } cam;
 
@@ -270,7 +271,7 @@ void game::play() {
   tm.add_tile( { map.tile1, { textures, map.src1, null_des } } );
   tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
 
-  camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_pos);
+  camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(
 	   player.pos, player.max_speed, player.angle,
 	   &tm, cam1,
