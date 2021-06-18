@@ -26,6 +26,12 @@ private:
 		   float& booster, const double angle_modifier,
 		   const vec2f origin
 		   );
+  void update_physics(
+		      const float acceleration, const float deceleration,
+		      const float friction, const float booster,
+		      const float delta_time
+		      );
+  void update_sprite();
 
 public:
   car(

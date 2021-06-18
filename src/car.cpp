@@ -3,11 +3,6 @@
 
 
 void car::update(const Uint8* key, const float delta_time) {
-  auto to_radians = [] (const double angle) {
-    const double pi = 3.141592654;
-    return angle * pi / 180;
-  };
-
   float booster = 1.0f;
   const float friction = 1.05f,
     acceleration = 250.0f * delta_time,
@@ -17,22 +12,8 @@ void car::update(const Uint8* key, const float delta_time) {
   const vec2f origin = { 0.0f, 0.0f };
 
   this->update_data(key, booster, angle_modifier, origin);
-
-  if (this->speed < this->goal_speed)
-      this->speed += acceleration * friction * booster;
-
-  if (this->speed > this->goal_speed)
-      this->speed -= deceleration * friction * booster;
-
-
-
-  this->pos.x += speed * delta_time * std::sin(to_radians(this->angle));
-  this->pos.y -= speed * delta_time * std::cos(to_radians(this->angle));
-
-  this->cam.update(this->pos);
-
-  this->sprite.des.x = this->pos.x - this->cam.get_camera_pos().x;
-  this->sprite.des.y = this->pos.y - this->cam.get_camera_pos().y;
+  this->update_physics(acceleration, deceleration, friction, booster, delta_time);
+  this->update_sprite();
 
 }
 
@@ -78,4 +59,32 @@ void car::update_data(
 
   if (z)
     this->pos = origin;
+}
+
+void car::update_physics(
+			 const float acceleration, const float deceleration,
+			 const float friction, const float booster,
+			 const float delta_time
+			 ) {  
+  auto to_radians = [] (const double angle) {
+    const double pi = 3.141592654;
+    return angle * pi / 180;
+  };
+
+  if (this->speed < this->goal_speed)
+      this->speed += acceleration * friction * booster;
+
+  if (this->speed > this->goal_speed)
+      this->speed -= deceleration * friction * booster;
+
+  this->pos.x += this->speed * delta_time * std::sin(to_radians(this->angle));
+  this->pos.y -= this->speed * delta_time * std::cos(to_radians(this->angle));
+
+  this->cam.update(this->pos);
+
+}
+
+void car::update_sprite() {
+  this->sprite.des.x = this->pos.x - this->cam.get_camera_pos().x;
+  this->sprite.des.y = this->pos.y - this->cam.get_camera_pos().y;
 }
