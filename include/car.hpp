@@ -21,6 +21,12 @@ private:
   image sprite;
   const SDL_RendererFlip flip;
 
+  void update_data(
+		   const Uint8* key,
+		   float& booster, const double angle_modifier,
+		   const vec2f origin
+		   );
+
 public:
   car(
       const vec2f pos,
