@@ -23,16 +23,8 @@ private:
   image sprite;
   const SDL_RendererFlip flip;
 
-  void update_data(
-		   const Uint8* key,
-		   float& booster, const double angle_modifier,
-		   const vec2f origin
-		   );
-  void update_physics(
-		      const float acceleration, const float deceleration,
-		      const float friction, const float booster,
-		      const float delta_time
-		      );
+  void update_data(const Uint8* key, const double angle_modifier);
+  void update_physics(const float friction, const float delta_time);
   void update_sprite();
 
 public:
@@ -47,9 +39,10 @@ public:
       const SDL_RendererFlip flip
       ) :
     origin(origin), pos(origin),
-    speed(0.0f), goal_speed(0.0f), max_speed(max_speed),
-    acceleration(acceleration), deceleration(deceleration),
+    speed(0.0f), goal_speed(0.0f),
     booster(1.0f),
+    max_speed(max_speed),
+    acceleration(acceleration), deceleration(deceleration),
     angle(angle),
 
     cam(cam),
