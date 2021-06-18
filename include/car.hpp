@@ -9,15 +9,17 @@
 
 class car {
 private:
+  const vec2f origin;
   vec2f pos;
   float speed,
-    goal_speed;
-  const float max_speed;
+    goal_speed,
+    booster;
+  const float max_speed,
+    acceleration,
+    deceleration;
   double angle;
 
-  tile_map* current_map;
   camera& cam;
-
   image sprite;
   const SDL_RendererFlip flip;
 
@@ -35,28 +37,25 @@ private:
 
 public:
   car(
-      const vec2f pos,
+      const vec2f origin,
       const float max_speed,
+      const float acceleration, const float deceleration,
       const double angle,
 
-      tile_map* current_map,
       camera& cam,
-
       const image sprite,
       const SDL_RendererFlip flip
       ) :
-    pos(pos),
+    origin(origin), pos(origin),
     speed(0.0f), goal_speed(0.0f), max_speed(max_speed),
+    acceleration(acceleration), deceleration(deceleration),
+    booster(1.0f),
     angle(angle),
 
-    current_map(current_map),
     cam(cam),
-
     sprite(sprite),
     flip(flip) { }
   ~car() { SDL_DestroyTexture(this->sprite.tex); }
-
-  vec2f get_pos() const { return this->pos; }
 
   void update(const Uint8* key, const float delta_time);
   void render(SDL_Renderer* renderer) const;

@@ -129,8 +129,10 @@ struct {
     fh = h;
   const vec2f wh = { fw, fh },
 
-    pos = win.wh / 2.0f - wh / 2.0f;
-  const float max_speed = 1250.0f;
+    origin = win.wh / 2.0f - wh / 2.0f;
+  const float max_speed = 1250.0f,
+    acceleration = 250.0f,
+    deceleration = acceleration / 2.0f;
   const double angle = 0.0;
 
 } const player;
@@ -148,7 +150,7 @@ struct {
 
   vec2f xy_limit, wh_limit;
   const vec2f window_wh = win.wh,
-    ref_xy = player.pos,
+    ref_xy = player.origin,
     ref_wh = player.wh;
 
 } cam;
@@ -273,8 +275,11 @@ void game::play() {
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(
-	   player.pos, player.max_speed, player.angle,
-	   &tm, cam1,
+	   player.origin, player.max_speed,
+	   player.acceleration, player.deceleration,
+	   player.angle,
+
+	   cam1,
 	   { textures, player.src, player.des }, player.flip
 	   );
 
