@@ -4,60 +4,28 @@
 
 
 
+#define ASSIGN(op)				  \
+  constexpr vec2f& operator op(const vec2f vec) { \
+    this->x op vec.x;				  \
+    this->y op vec.y;				  \
+    return *this;				  \
+  }						  \
+						  \
+  constexpr vec2f& operator op(const float xy) {  \
+    this->x op xy;				  \
+    this->y op xy;				  \
+    return *this;				  \
+  }
+
+
 struct vec2f {
   float x, y;
 
-  constexpr vec2f& operator =(const vec2f vec) {
-    this->x = vec.x;
-    this->y = vec.y;
-    return *this;
-  }
-  constexpr vec2f& operator +=(const vec2f vec) {
-    this->x += vec.x;
-    this->y += vec.y;
-    return *this;
-  }
-  constexpr vec2f& operator -=(const vec2f vec) {
-    this->x -= vec.x;
-    this->y -= vec.y;
-    return *this;
-  }
-  constexpr vec2f& operator *=(const vec2f vec) {
-    this->x *= vec.x;
-    this->y *= vec.y;
-    return *this;
-  }
-  constexpr vec2f& operator /=(const vec2f vec) {
-    this->x /= vec.x;
-    this->y /= vec.y;
-    return *this;
-  }
-
-  constexpr vec2f& operator =(const float xy) {
-    this->x = xy;
-    this->y = xy;
-    return *this;
-  }
-  constexpr vec2f& operator +=(const float xy) {
-    this->x += xy;
-    this->y += xy;
-    return *this;
-  }
-  constexpr vec2f& operator -=(const float xy) {
-    this->x -= xy;
-    this->y -= xy;
-    return *this;
-  }
-  constexpr vec2f& operator *=(const float xy) {
-    this->x *= xy;
-    this->y *= xy;
-    return *this;
-  }
-  constexpr vec2f& operator /=(const float xy) {
-    this->x /= xy;
-    this->y /= xy;
-    return *this;
-  }
+  ASSIGN(=)
+  ASSIGN(+=)
+  ASSIGN(-=)
+  ASSIGN(*=)
+  ASSIGN(/=)
 
 };
 
@@ -153,3 +121,6 @@ inline constexpr bool operator <=(const vec2f lhs, const vec2f rhs) {
   return (lhs.x + lhs.y <= rhs.x + rhs.y);
 }
 
+
+
+#undef ASSIGN
