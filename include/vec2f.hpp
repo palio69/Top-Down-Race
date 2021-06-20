@@ -16,6 +16,25 @@
     this->y op xy;				  \
     return *this;				  \
   }
+#define ARITHMETIC(op)						   \
+  inline constexpr vec2f operator op(const vec2f vec1,		   \
+				     const vec2f vec2) {	   \
+    const vec2f vec3 = { (vec1.x op vec2.x), (vec1.y op vec2.y) }; \
+    return vec3;						   \
+  }								   \
+								   \
+  inline constexpr vec2f operator op(const vec2f vec1,		   \
+				     const float xy) {		   \
+    const vec2f vec2 = { (vec1.x op xy), (vec1.y op xy) };	   \
+    return vec2;						   \
+  }								   \
+								   \
+  inline constexpr vec2f operator op(const float xy,		   \
+				    const vec2f vec1) {		   \
+    const vec2f vec2 = { (xy op vec1.x), (xy op vec1.y) };	   \
+    return vec2;						   \
+  }
+
 
 
 struct vec2f {
@@ -33,69 +52,10 @@ struct vec2f {
 
 std::ostream& operator <<(std::ostream& os, const vec2f vec);
 
-
-
-inline constexpr vec2f operator +(const vec2f vec1, const vec2f vec2) {
-  const vec2f vec3 = { (vec1.x + vec2.x), (vec1.y + vec2.y) };
-  return vec3;
-}
-
-inline constexpr vec2f operator -(const vec2f vec1, const vec2f vec2) {
-  const vec2f vec3 = { (vec1.x - vec2.x), (vec1.y - vec2.y) };
-  return vec3;
-}
-
-inline constexpr vec2f operator *(const vec2f vec1, const vec2f vec2) {
-  const vec2f vec3 = { (vec1.x * vec2.x), (vec1.y * vec2.y) };
-  return vec3;
-}
-
-inline constexpr vec2f operator /(const vec2f vec1, const vec2f vec2) {
-  const vec2f vec3 = { (vec1.x / vec2.x), (vec1.y / vec2.y) };
-  return vec3;
-}
-
-inline constexpr vec2f operator +(const vec2f vec1, const float xy) {
-  const vec2f vec2 = { (vec1.x + xy), (vec1.y + xy) };
-  return vec2;
-}
-
-inline constexpr vec2f operator -(const vec2f vec1, const float xy) {
-  const vec2f vec2 = { (vec1.x - xy), (vec1.y - xy) };
-  return vec2;
-}
-
-inline constexpr vec2f operator *(const vec2f vec1, const float xy) {
-  const vec2f vec2 = { (vec1.x * xy), (vec1.y * xy) };
-  return vec2;
-}
-
-inline constexpr vec2f operator /(const vec2f vec1, const float xy) {
-  const vec2f vec2 = { (vec1.x / xy), (vec1.y / xy) };
-  return vec2;
-}
-
-inline constexpr vec2f operator +(const float xy, const vec2f vec1) {
-  const vec2f vec2 = { (xy + vec1.x), (xy + vec1.y) };
-  return vec2;
-}
-
-inline constexpr vec2f operator -(const float xy, const vec2f vec1) {
-  const vec2f vec2 = { (xy - vec1.x), (xy - vec1.y) };
-  return vec2;
-}
-
-inline constexpr vec2f operator *(const float xy, const vec2f vec1) {
-  const vec2f vec2 = { (xy + vec1.x), (xy * vec1.y) };
-  return vec2;
-}
-
-inline constexpr vec2f operator /(const float xy, const vec2f vec1) {
-  const vec2f vec2 = { (xy / vec1.x), (xy / vec1.y) };
-  return vec2;
-}
-
-
+ARITHMETIC(+)
+ARITHMETIC(-)
+ARITHMETIC(*)
+ARITHMETIC(/)
 
 inline constexpr bool operator ==(const vec2f lhs, const vec2f rhs) {
   return (lhs.x == rhs.x && lhs.y == rhs.y);
@@ -124,3 +84,4 @@ inline constexpr bool operator <=(const vec2f lhs, const vec2f rhs) {
 
 
 #undef ASSIGN
+#undef ARITHMETIC
