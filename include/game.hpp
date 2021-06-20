@@ -11,7 +11,6 @@
 class game {
 private:
   static void init(SDL_Window*& window, SDL_Renderer*& renderer);
-  static float get_current_time() { return SDL_GetTicks() / 1000.0f; }
 
 public:
   static void play();
