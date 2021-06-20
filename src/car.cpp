@@ -61,14 +61,23 @@ void car::update_physics(const float friction) {
     return angle * pi / 180;
   };
 
+  const float final_acceleration = this->acceleration * time_system::delta_time * friction * this->booster,
+    final_deceleration = this->deceleration * time_system::delta_time * friction * this->booster;
+  const vec2f angles = { std::sin(to_radians(this->angle)), std::cos(to_radians(this->angle)) };
+  vec2f final_pos = angles * time_system::delta_time;
+
+
+
   if (this->speed < this->goal_speed)
-    this->speed += this->acceleration * time_system::delta_time * friction * this->booster;
+    this->speed += final_acceleration;
 
   if (this->speed > this->goal_speed)
-    this->speed -= this->deceleration * time_system::delta_time * friction * this->booster;
+    this->speed -= final_deceleration;
 
-  this->pos.x += this->speed * time_system::delta_time * std::sin(to_radians(this->angle));
-  this->pos.y -= this->speed * time_system::delta_time * std::cos(to_radians(this->angle));
+  final_pos = final_pos * this->speed;
+
+  this->pos.x += final_pos.x;
+  this->pos.y -= final_pos.y;
 
   this->cam.update(this->pos);
 
