@@ -2,12 +2,12 @@
 
 
 
-void car::update(const Uint8* key, const float delta_time) {
+void car::update(const Uint8* key) {
   const float friction = 1.05f;
-  const double angle_modifier = 180.0f * delta_time;
+  const double angle_modifier = 180.0f * time_system::delta_time;
 
   this->update_data(key, angle_modifier);
-  this->update_physics(friction, delta_time);
+  this->update_physics(friction);
   this->update_sprite();
 
 }
@@ -55,20 +55,20 @@ void car::update_data(const Uint8* key, const double angle_modifier) {
     this->pos = this->origin;
 }
 
-void car::update_physics(const float friction, const float delta_time) {  
+void car::update_physics(const float friction) {
   auto to_radians = [] (const double angle) {
     const double pi = 3.141592654;
     return angle * pi / 180;
   };
 
   if (this->speed < this->goal_speed)
-      this->speed += this->acceleration * delta_time * friction * this->booster;
+    this->speed += this->acceleration * time_system::delta_time * friction * this->booster;
 
   if (this->speed > this->goal_speed)
-      this->speed -= this->deceleration * delta_time * friction * this->booster;
+    this->speed -= this->deceleration * time_system::delta_time * friction * this->booster;
 
-  this->pos.x += this->speed * delta_time * std::sin(to_radians(this->angle));
-  this->pos.y -= this->speed * delta_time * std::cos(to_radians(this->angle));
+  this->pos.x += this->speed * time_system::delta_time * std::sin(to_radians(this->angle));
+  this->pos.y -= this->speed * time_system::delta_time * std::cos(to_radians(this->angle));
 
   this->cam.update(this->pos);
 

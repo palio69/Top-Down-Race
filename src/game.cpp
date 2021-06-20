@@ -261,10 +261,7 @@ void game::play() {
 
   map.init();
   cam.init();
-
-  float current_time = game::get_current_time(),
-    next_time = 0.0f,
-    delta_time = 0.0f;
+  time_system::init();
 
   const SDL_Rect null_des = { 0, 0, 0, 0 };
 
@@ -285,8 +282,8 @@ void game::play() {
 
 
 
-  auto update = [&car1, &cam1] (const Uint8* key, const float delta_time) {
-    car1.update(key, delta_time);
+  auto update = [&car1, &cam1] (const Uint8* key) {
+    car1.update(key);
   };
 
   auto clear_window = [&renderer] {
@@ -310,9 +307,7 @@ void game::play() {
 
   while (running) {
 
-    next_time = game::get_current_time();
-    delta_time = next_time - current_time;
-    current_time = next_time;
+    time_system::work();
 
     while(SDL_PollEvent(&evn)) {
 
@@ -323,7 +318,7 @@ void game::play() {
 
     const Uint8* key = SDL_GetKeyboardState(nullptr);
 
-    update(key, delta_time);
+    update(key);
 
     clear_window();
     render();

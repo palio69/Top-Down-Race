@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <SDL2/SDL.h>
+#include <system.hpp>
 #include <vec2f.hpp>
 #include <image.hpp>
 #include <camera.hpp>
@@ -24,7 +25,7 @@ private:
   const SDL_RendererFlip flip;
 
   void update_data(const Uint8* key, const double angle_modifier);
-  void update_physics(const float friction, const float delta_time);
+  void update_physics(const float friction);
   void update_sprite();
 
 public:
@@ -50,7 +51,7 @@ public:
     flip(flip) { }
   ~car() { SDL_DestroyTexture(this->sprite.tex); }
 
-  void update(const Uint8* key, const float delta_time);
+  void update(const Uint8* key);
   void render(SDL_Renderer* renderer) const;
 
 };
