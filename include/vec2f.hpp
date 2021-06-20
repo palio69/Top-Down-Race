@@ -33,6 +33,32 @@ struct vec2f {
     return *this;
   }
 
+  constexpr vec2f& operator =(const float xy) {
+    this->x = xy;
+    this->y = xy;
+    return *this;
+  }
+  constexpr vec2f& operator +=(const float xy) {
+    this->x += xy;
+    this->y += xy;
+    return *this;
+  }
+  constexpr vec2f& operator -=(const float xy) {
+    this->x -= xy;
+    this->y -= xy;
+    return *this;
+  }
+  constexpr vec2f& operator *=(const float xy) {
+    this->x *= xy;
+    this->y *= xy;
+    return *this;
+  }
+  constexpr vec2f& operator /=(const float xy) {
+    this->x /= xy;
+    this->y /= xy;
+    return *this;
+  }
+
 };
 
 
@@ -78,6 +104,26 @@ inline constexpr vec2f operator *(const vec2f vec1, const float xy) {
 
 inline constexpr vec2f operator /(const vec2f vec1, const float xy) {
   const vec2f vec2 = { (vec1.x / xy), (vec1.y / xy) };
+  return vec2;
+}
+
+inline constexpr vec2f operator +(const float xy, const vec2f vec1) {
+  const vec2f vec2 = { (xy + vec1.x), (xy + vec1.y) };
+  return vec2;
+}
+
+inline constexpr vec2f operator -(const float xy, const vec2f vec1) {
+  const vec2f vec2 = { (xy - vec1.x), (xy - vec1.y) };
+  return vec2;
+}
+
+inline constexpr vec2f operator *(const float xy, const vec2f vec1) {
+  const vec2f vec2 = { (xy + vec1.x), (xy * vec1.y) };
+  return vec2;
+}
+
+inline constexpr vec2f operator /(const float xy, const vec2f vec1) {
+  const vec2f vec2 = { (xy / vec1.x), (xy / vec1.y) };
   return vec2;
 }
 
