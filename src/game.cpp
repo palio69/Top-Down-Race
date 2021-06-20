@@ -132,7 +132,7 @@ struct {
     origin = win.wh / 2.0f - wh / 2.0f;
   const float max_speed = 1250.0f,
     acceleration = 250.0f,
-    deceleration = acceleration / 2.0f;
+    deceleration = acceleration * 2.0f;
   const double angle = 0.0;
 
 } const player;
