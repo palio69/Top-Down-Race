@@ -157,7 +157,7 @@ struct {
 
 
 
-void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
+void game::init() {
   auto init_dependencies = [] {
     std::cout << "--- initializing dependencies...\n";
 
@@ -189,24 +189,26 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
 
   };
 
-  auto init_objs = [&window, &renderer] {
+  auto init_objs = [] {
     std::cout << "--- initializing essential variables and objects...\n";
 
-    window = SDL_CreateWindow(win.title, win.x, win.y, win.w, win.h, win.flags);
-    renderer = SDL_CreateRenderer(window, ren.index, ren.flags);
-    textures = IMG_LoadTexture(renderer, path);
+    render_system::init(
+			win.title, win.x, win.y, win.w, win.h, win.flags,
+			ren.index, ren.flags
+			);
+    textures = IMG_LoadTexture(render_system::renderer(), path);
 
     bool initialized = true;
 
 
 
-    if (!window) {
+    if (!render_system::window()) {
       std::cout << "failed to initialize window\n";
       initialized = false;
     } else
       std::cout << "initialized window successfully!\n";
 
-    if (!renderer) {
+    if (!render_system::renderer()) {
       std::cout << "failed to initialize renderer\n";
       initialized = false;
     } else
@@ -240,10 +242,7 @@ void game::init(SDL_Window*& window, SDL_Renderer*& renderer) {
 }
 
 void game::play() {
-  SDL_Window* window = nullptr;
-  SDL_Renderer* renderer = nullptr;
-
-  try { game::init(window, renderer); }
+  try { game::init(); }
 
   catch(const char* e) {
     std::cout << e << std::endl;
@@ -286,18 +285,18 @@ void game::play() {
     car1.update(key);
   };
 
-  auto clear_window = [&renderer] {
-    SDL_SetRenderDrawColor(renderer, ren.r, ren.g, ren.b, ren.a);
-    SDL_RenderClear(renderer);
+  auto clear_window = [] {
+    SDL_SetRenderDrawColor(render_system::renderer(), ren.r, ren.g, ren.b, ren.a);
+    SDL_RenderClear(render_system::renderer());
   };
 
-  auto render = [&renderer, &tm, &car1, &cam1] {
-    tm.render(renderer, cam1);
-    car1.render(renderer);
+  auto render = [&tm, &car1, &cam1] {
+    tm.render(render_system::renderer(), cam1);
+    car1.render(render_system::renderer());
   };
 
-  auto update_window = [&renderer] {
-    SDL_RenderPresent(renderer);
+  auto update_window = [] {
+    SDL_RenderPresent(render_system::renderer());
   };
 
 
@@ -331,8 +330,7 @@ void game::play() {
   std::cout << "\n< EXIT >" << std::endl;
 
   SDL_DestroyTexture(textures);
-  SDL_DestroyWindow(window);
-  SDL_DestroyRenderer(renderer);
+  render_system::quit();
 
   IMG_Quit();
   SDL_Quit();

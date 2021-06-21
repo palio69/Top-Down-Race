@@ -10,7 +10,7 @@
 
 class game {
 private:
-  static void init(SDL_Window*& window, SDL_Renderer*& renderer);
+  static void init();
 
 public:
   static void play();
