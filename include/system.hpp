@@ -30,6 +30,7 @@ private:
 
   static SDL_Window* window__;
   static SDL_Renderer* renderer__;
+  static int r__, g__, b__, a__;
 
 public:
   static SDL_Window* window() { return window__; }
@@ -44,7 +45,9 @@ public:
 		   const unsigned window_flags,
 
 		   const int index,
-		   const unsigned renderer_flags
+		   const unsigned renderer_flags,
+
+		   const int r, const int g, const int b, const int a
 		   );
   static void work(std::function<void()> fn);
 

@@ -22,6 +22,10 @@ void time_system::work() {
 
 SDL_Window* render_system::window__;
 SDL_Renderer* render_system::renderer__;
+int render_system::r__,
+  render_system::g__,
+  render_system::b__,
+  render_system::a__;
 
 void render_system::quit() {
   SDL_DestroyWindow(window__);
@@ -35,14 +39,20 @@ void render_system::init(
 			 const unsigned window_flags,
 
 			 const int index,
-			 const unsigned renderer_flags
+			 const unsigned renderer_flags,
+
+			 const int r, const int g, const int b, const int a
 			 ) {
   window__ = SDL_CreateWindow(title, x, y, w, h, window_flags);
   renderer__ = SDL_CreateRenderer(window__, index, renderer_flags);
+  r__ = r;
+  g__ = g;
+  b__ = b;
+  a__ = a;
 }
 
 void render_system::work(std::function<void()> fn) {
-  SDL_SetRenderDrawColor(renderer__, 0, 0, 0, 255);
+  SDL_SetRenderDrawColor(renderer__, r__, g__, b__, a__);
   SDL_RenderClear(renderer__);
 
   fn();

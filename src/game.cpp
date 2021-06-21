@@ -194,7 +194,8 @@ void game::init() {
 
     render_system::init(
 			win.title, win.x, win.y, win.w, win.h, win.flags,
-			ren.index, ren.flags
+			ren.index, ren.flags,
+			ren.r, ren.g, ren.b, ren.a
 			);
     textures = IMG_LoadTexture(render_system::renderer(), path);
 
