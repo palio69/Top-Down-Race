@@ -7,13 +7,13 @@ private:
   time_system() { }
   ~time_system() { }
 
-  static float current_time,
-    next_time,
-    delta_time;
+  static float current_time__,
+    next_time__,
+    delta_time__;
 
 public:
-  static float get_delta_time() { return delta_time; }
-  static float get_current_time() { return SDL_GetTicks() / 1000.0f; }
+  static float delta_time() { return delta_time__; }
+  static float time() { return SDL_GetTicks() / 1000.0f; }
 
   static void init();
   static void work();

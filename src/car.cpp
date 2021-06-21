@@ -4,7 +4,7 @@
 
 void car::update(const Uint8* key) {
   const float friction = 1.05f;
-  const double angle_modifier = 180.0f * time_system::get_delta_time();
+  const double angle_modifier = 180.0f * time_system::delta_time();
 
   this->update_data(key, angle_modifier);
   this->update_physics(friction);
@@ -61,10 +61,10 @@ void car::update_physics(const float friction) {
     return angle * pi / 180;
   };
 
-  const float final_acceleration = this->acceleration * time_system::get_delta_time() * friction * this->booster,
-    final_deceleration = this->deceleration * time_system::get_delta_time() * friction * this->booster;
+  const float final_acceleration = this->acceleration * time_system::delta_time() * friction * this->booster,
+    final_deceleration = this->deceleration * time_system::delta_time() * friction * this->booster;
   const vec2f angles = { std::sin(to_radians(this->angle)), std::cos(to_radians(this->angle)) };
-  vec2f final_pos = angles * time_system::get_delta_time();
+  vec2f final_pos = angles * time_system::delta_time();
 
 
 
