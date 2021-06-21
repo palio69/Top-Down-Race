@@ -197,7 +197,7 @@ void game::init() {
 			ren.index, ren.flags,
 			ren.r, ren.g, ren.b, ren.a
 			);
-    textures = IMG_LoadTexture(render_system::renderer(), path);
+    sprite_system::init();
 
     bool initialized = true;
 
@@ -215,7 +215,7 @@ void game::init() {
     } else
       std::cout << "initialized renderer successfully!\n";
 
-    if (!textures) {
+    if (!sprite_system::textures()) {
       std::cout << "failed to load textures\n";
       initialized = false;
     } else
@@ -267,8 +267,8 @@ void game::play() {
 
   tile_map tm(map.first_row, map.tw, map.th);
   tm.add_to_map(map.tiles);
-  tm.add_tile( { map.tile1, { textures, map.src1, null_des } } );
-  tm.add_tile( { map.tile2, { textures, map.src2, null_des } } );
+  tm.add_tile( { map.tile1, { sprite_system::textures(), map.src1, null_des } } );
+  tm.add_tile( { map.tile2, { sprite_system::textures(), map.src2, null_des } } );
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(
@@ -277,7 +277,7 @@ void game::play() {
 	   player.angle,
 
 	   cam1,
-	   { textures, player.src, player.des }, player.flip
+	   { sprite_system::textures(), player.src, player.des }, player.flip
 	   );
 
 

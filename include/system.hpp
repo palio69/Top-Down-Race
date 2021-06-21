@@ -1,7 +1,9 @@
 #pragma once
 
+#include <string>
 #include <functional>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 
 
@@ -18,6 +20,21 @@ public:
   static float delta_time() { return delta_time__; }
   static float time() { return SDL_GetTicks() / 1000.0f; }
 
+  static void init();
+  static void work();
+
+};
+
+class sprite_system {
+private:
+  sprite_system() { }
+  ~sprite_system() { }
+
+  static std::string path__;
+  static SDL_Texture* textures__;
+
+public:
+  static SDL_Texture* textures() { return textures__; }
   static void init();
   static void work();
 

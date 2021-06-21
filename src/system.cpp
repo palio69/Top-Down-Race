@@ -20,6 +20,16 @@ void time_system::work() {
 
 
 
+std::string sprite_system::path__;
+SDL_Texture* sprite_system::textures__;
+
+void sprite_system::init() {
+  path__ = "assets/Top Down Race Sprites.png";
+  textures__ = IMG_LoadTexture(render_system::renderer(), path__.data());
+}
+
+
+
 SDL_Window* render_system::window__;
 SDL_Renderer* render_system::renderer__;
 int render_system::r__,
