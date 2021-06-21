@@ -7,3 +7,10 @@ struct image {
   SDL_Rect src, des;
 
 };
+
+struct image_ex : image {
+  double angle;
+  SDL_Point* center;
+  SDL_RendererFlip flip;
+
+};
