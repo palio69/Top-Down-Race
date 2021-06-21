@@ -1,5 +1,12 @@
-#define INTERN
 #include <system.hpp>
+
+
+
+float time_system::current_time;
+float time_system::next_time;
+float time_system::delta_time;
+
+
 
 void time_system::init() {
   current_time = get_current_time();

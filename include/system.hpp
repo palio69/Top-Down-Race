@@ -2,17 +2,20 @@
 
 #include <SDL2/SDL.h>
 
-namespace time_system {
+class time_system {
+private:
+  time_system() { }
+  ~time_system() { }
 
-#ifndef INTERN
-  extern
-#endif
-  float current_time,
+  static float current_time,
     next_time,
     delta_time;
-  inline float get_current_time() { return SDL_GetTicks() / 1000.0f; }
 
-  void init();
-  void work();
+public:
+  static float get_delta_time() { return delta_time; }
+  static float get_current_time() { return SDL_GetTicks() / 1000.0f; }
 
-}
+  static void init();
+  static void work();
+
+};
