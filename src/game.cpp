@@ -285,18 +285,10 @@ void game::play() {
     car1.update(key);
   };
 
-  auto clear_window = [] {
-    SDL_SetRenderDrawColor(render_system::renderer(), ren.r, ren.g, ren.b, ren.a);
-    SDL_RenderClear(render_system::renderer());
-  };
 
   auto render = [&tm, &car1, &cam1] {
     tm.render(render_system::renderer(), cam1);
     car1.render(render_system::renderer());
-  };
-
-  auto update_window = [] {
-    SDL_RenderPresent(render_system::renderer());
   };
 
 
@@ -318,10 +310,7 @@ void game::play() {
     const Uint8* key = SDL_GetKeyboardState(nullptr);
 
     update(key);
-
-    clear_window();
-    render();
-    update_window();
+    render_system::work(render);
 
   }
 

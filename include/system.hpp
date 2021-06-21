@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <SDL2/SDL.h>
 
 
@@ -45,6 +46,6 @@ public:
 		   const int index,
 		   const unsigned renderer_flags
 		   );
-  static void work();
+  static void work(std::function<void()> fn);
 
 };

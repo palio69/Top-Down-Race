@@ -40,3 +40,12 @@ void render_system::init(
   window__ = SDL_CreateWindow(title, x, y, w, h, window_flags);
   renderer__ = SDL_CreateRenderer(window__, index, renderer_flags);
 }
+
+void render_system::work(std::function<void()> fn) {
+  SDL_SetRenderDrawColor(renderer__, 0, 0, 0, 255);
+  SDL_RenderClear(renderer__);
+
+  fn();
+
+  SDL_RenderPresent(renderer__);
+}
