@@ -44,7 +44,7 @@ struct { // ren
 
 struct { // map
 
-  void init() {
+  void init() const {
     first_row = "..................................................................";
     tiles =     "..................................................................";
     tiles +=    ".....--------------------------------------------------------.....";
@@ -113,7 +113,7 @@ struct { // map
     tiles +=    "..................................................................";
   }
 
-  std::string first_row, tiles;
+  mutable std::string first_row, tiles;
 
   const int tw = 64,
     th = 64;
@@ -123,7 +123,7 @@ struct { // map
   const SDL_Rect src1 = { 16, 0, 16, 16 },
     src2 = { 32, 0, 16, 16 };
 
-} map;
+} const map;
 
 
 
@@ -150,7 +150,7 @@ struct { // player
 
 struct { // cam
 
-  void init() {
+  void init() const {
     const float x = 0.0f,
       y = 0.0f,
       w = map.first_row.size(),
@@ -160,12 +160,12 @@ struct { // cam
     wh_limit = { w * map.tw, h * map.th };
   }
 
-  vec2f xy_limit, wh_limit;
+  mutable vec2f xy_limit, wh_limit;
   const vec2f window_wh = win.wh,
     ref_xy = player.origin,
     ref_wh = player.wh;
 
-} cam;
+} const cam;
 
 
 
