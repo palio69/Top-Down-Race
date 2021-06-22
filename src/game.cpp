@@ -276,7 +276,7 @@ void game::play() {
 
 
 
-  auto update = [&car1, &cam1] (const Uint8* key) {
+  auto update = [&car1] (const Uint8* key) {
     car1.update(key);
   };
 
