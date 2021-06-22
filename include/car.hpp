@@ -22,7 +22,6 @@ private:
 
   camera& cam;
   image sprite;
-  const SDL_RendererFlip flip;
 
   void update_data(const Uint8* key, const double angle_modifier);
   void update_physics(const float friction);
@@ -36,8 +35,7 @@ public:
       const double angle,
 
       camera& cam,
-      const image sprite,
-      const SDL_RendererFlip flip
+      const image sprite
       ) :
     origin(origin), pos(origin),
     speed(0.0f), goal_speed(0.0f),
@@ -47,11 +45,10 @@ public:
     angle(angle),
 
     cam(cam),
-    sprite(sprite),
-    flip(flip) { }
-  ~car() { SDL_DestroyTexture(this->sprite.tex); }
+    sprite(sprite) { }
+  ~car() { }
 
   void update(const Uint8* key);
-  void render(SDL_Renderer* renderer) const;
+  void render() const { render_system::render(this->sprite); }
 
 };

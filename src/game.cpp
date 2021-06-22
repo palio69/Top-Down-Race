@@ -120,7 +120,6 @@ struct {
     h = 64;
   const SDL_Rect src = { 0, 0, 16, 16 },
     des = { win.w / 2 - w / 2, win.h / 2 - h / 2, w, h };
-  const SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   const float fw = w,
     fh = h;
@@ -260,12 +259,10 @@ void game::play() {
   cam.init();
   time_system::init();
 
-  const SDL_Rect null_des = { 0, 0, 0, 0 };
-
   tile_map tm(map.first_row, map.tw, map.th);
   tm.add_to_map(map.tiles);
-  tm.add_tile( { map.tile1, { sprite_system::textures(), map.src1, null_des } } );
-  tm.add_tile( { map.tile2, { sprite_system::textures(), map.src2, null_des } } );
+  tm.add_tile( { map.tile1, { map.src1 } } );
+  tm.add_tile( { map.tile2, { map.src2 } } );
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(
@@ -274,7 +271,7 @@ void game::play() {
 	   player.angle,
 
 	   cam1,
-	   { sprite_system::textures(), player.src, player.des }, player.flip
+	   { player.src, player.des }
 	   );
 
 
@@ -285,8 +282,8 @@ void game::play() {
 
 
   auto render = [&tm, &car1, &cam1] {
-    tm.render(render_system::renderer(), cam1);
-    car1.render(render_system::renderer());
+    tm.render(cam1);
+    car1.render();
   };
 
 

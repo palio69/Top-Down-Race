@@ -42,6 +42,14 @@ void render_system::clear() {
   SDL_RenderClear(renderer__);
 }
 
+void render_system::render(const image& img) {
+  SDL_RenderCopyEx(
+		   renderer__, sprite_system::textures(),
+		   &(img.src), &(img.des),
+		   img.angle, img.center, img.flip
+		   );
+}
+
 void render_system::quit() {
   SDL_DestroyWindow(window__);
   SDL_DestroyRenderer(renderer__);

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
+#include <system.hpp>
 #include <camera.hpp>
 #include <image.hpp>
 
@@ -31,15 +32,11 @@ public:
     tiles { },
     w(first_row.size()), h(1),
     tw(tw), th(th) { }
-  ~tile_map() {
-    for (auto& i : this->tiles)
-      SDL_DestroyTexture(i.sprite.tex);
-
-  }
+  ~tile_map() { }
 
   void add_to_map(const std::string tiles);
   void add_tile(const tile new_tile);
 
-  void render(SDL_Renderer* renderer, const camera cam) const;
+  void render(const camera cam) const;
 
 };

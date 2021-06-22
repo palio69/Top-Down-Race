@@ -12,10 +12,6 @@ void car::update(const Uint8* key) {
 
 }
 
-void car::render(SDL_Renderer* renderer) const {
-  SDL_RenderCopyEx(renderer, this->sprite.tex, &(this->sprite.src), &(this->sprite.des), this->angle, nullptr, this->flip);
-}
-
 void car::update_data(const Uint8* key, const double angle_modifier) {
   const bool up = key[SDL_SCANCODE_UP],
     down = key[SDL_SCANCODE_DOWN],
@@ -62,9 +58,12 @@ void car::update_physics(const float friction) {
   };
 
   const float final_acceleration = this->acceleration * time_system::delta_time() * friction * this->booster,
-    final_deceleration = this->deceleration * time_system::delta_time() * friction * this->booster;
-  const vec2f angles = { std::sin(to_radians(this->angle)), std::cos(to_radians(this->angle)) };
-  vec2f final_pos = angles * time_system::delta_time();
+    final_deceleration = this->deceleration * time_system::delta_time() * friction * this->booster,
+
+    x_side = std::sin(to_radians(this->angle)),
+    y_side = std::cos(to_radians(this->angle));
+  const vec2f sides = { x_side, -y_side };
+  vec2f final_pos = sides * time_system::delta_time();
 
 
 
@@ -74,10 +73,10 @@ void car::update_physics(const float friction) {
   if (this->speed > this->goal_speed)
     this->speed -= final_deceleration;
 
-  final_pos = final_pos * this->speed;
 
-  this->pos.x += final_pos.x;
-  this->pos.y -= final_pos.y;
+
+  final_pos *= this->speed;
+  this->pos += final_pos;
 
   this->cam.update(this->pos);
 
@@ -86,4 +85,5 @@ void car::update_physics(const float friction) {
 void car::update_sprite() {
   this->sprite.des.x = this->pos.x - this->cam.get_camera_pos().x;
   this->sprite.des.y = this->pos.y - this->cam.get_camera_pos().y;
+  this->sprite.angle = this->angle;
 }

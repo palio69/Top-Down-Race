@@ -3,14 +3,10 @@
 #include <SDL2/SDL.h>
 
 struct image {
-  SDL_Texture* tex;
-  SDL_Rect src, des;
-
-};
-
-struct image_ex : image {
-  double angle;
-  SDL_Point* center;
-  SDL_RendererFlip flip;
+  SDL_Rect src = { 0, 0, 0, 0 },
+    des = { 0, 0, 0, 0 };
+  double angle = 0.0;
+  SDL_Point* center = nullptr;
+  SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 };
