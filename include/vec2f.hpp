@@ -38,7 +38,7 @@
 
 
 struct vec2f {
-  float x, y;
+  float x = 0.0f, y = 0.0f;
 
   ASSIGN(=)
   ASSIGN(+=)
