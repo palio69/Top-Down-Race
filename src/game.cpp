@@ -2,13 +2,17 @@
 
 
 
-struct {
+struct { // init_flags
+
   const int SDL = SDL_INIT_EVERYTHING;
   const int IMG = IMG_INIT_PNG;
 
 } const init_flags;
 
-struct {
+
+
+struct { // win
+
   const char* title = "Top Down Race";
   const int x = SDL_WINDOWPOS_CENTERED,
     y = SDL_WINDOWPOS_CENTERED,
@@ -22,7 +26,10 @@ struct {
 
 } const win;
 
-struct {
+
+
+struct { // ren
+
   const int index = -1;
   const unsigned flags = SDL_RENDERER_ACCELERATED;
 
@@ -33,7 +40,10 @@ struct {
 
 } const ren;
 
-struct {
+
+
+struct { // map
+
   void init() {
     first_row = "..................................................................";
     tiles =     "..................................................................";
@@ -115,7 +125,10 @@ struct {
 
 } map;
 
-struct {
+
+
+struct { // player
+
   const int w = 64,
     h = 64;
   const SDL_Rect src = { 0, 0, 16, 16 },
@@ -133,7 +146,10 @@ struct {
 
 } const player;
 
-struct {
+
+
+struct { // cam
+
   void init() {
     const float x = 0.0f,
       y = 0.0f,
