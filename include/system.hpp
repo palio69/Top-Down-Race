@@ -26,18 +26,18 @@ public:
 
 };
 
-class sprite_system {
+class texture_system {
 private:
-  sprite_system() { }
-  ~sprite_system() { }
+  texture_system() { }
+  ~texture_system() { }
 
   static std::string path__;
-  static SDL_Texture* textures__;
+  static SDL_Texture* main_textures__;
 
 public:
-  static SDL_Texture* textures() { return textures__; }
+  static SDL_Texture* main_textures() { return main_textures__; }
 
-  static void quit() { SDL_DestroyTexture(textures__); }
+  static void quit() { SDL_DestroyTexture(main_textures__); }
 
   static void init();
   static void work();

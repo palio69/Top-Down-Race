@@ -209,7 +209,7 @@ void game::init() {
 			ren.index, ren.flags,
 			ren.r, ren.g, ren.b, ren.a
 			);
-    sprite_system::init();
+    texture_system::init();
 
     bool initialized = true;
 
@@ -227,7 +227,7 @@ void game::init() {
     } else
       std::cout << "initialized renderer successfully!\n";
 
-    if (!sprite_system::textures()) {
+    if (!texture_system::main_textures()) {
       std::cout << "failed to load textures\n";
       initialized = false;
     } else
@@ -329,7 +329,7 @@ void game::play() {
 
   std::cout << "\n< EXIT >" << std::endl;
 
-  sprite_system::quit();
+  texture_system::quit();
   render_system::quit();
 
   IMG_Quit();
