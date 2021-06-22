@@ -2,9 +2,6 @@
 
 
 
-const char path[] = "assets/Top Down Race Sprites.png";
-SDL_Texture* textures = nullptr;
-
 struct {
   const int SDL = SDL_INIT_EVERYTHING;
   const int IMG = IMG_INIT_PNG;
@@ -319,7 +316,7 @@ void game::play() {
 
   std::cout << "\n< EXIT >" << std::endl;
 
-  SDL_DestroyTexture(textures);
+  sprite_system::quit();
   render_system::quit();
 
   IMG_Quit();

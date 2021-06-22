@@ -35,6 +35,9 @@ private:
 
 public:
   static SDL_Texture* textures() { return textures__; }
+
+  static void quit() { SDL_DestroyTexture(textures__); }
+
   static void init();
   static void work();
 
@@ -48,6 +51,9 @@ private:
   static SDL_Window* window__;
   static SDL_Renderer* renderer__;
   static int r__, g__, b__, a__;
+
+  static void clear();
+  static void update() { SDL_RenderPresent(renderer__); }
 
 public:
   static SDL_Window* window() { return window__; }

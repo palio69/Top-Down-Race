@@ -37,6 +37,11 @@ int render_system::r__,
   render_system::b__,
   render_system::a__;
 
+void render_system::clear() {
+  SDL_SetRenderDrawColor(renderer__, r__, g__, b__, a__);
+  SDL_RenderClear(renderer__);
+}
+
 void render_system::quit() {
   SDL_DestroyWindow(window__);
   SDL_DestroyRenderer(renderer__);
@@ -62,10 +67,7 @@ void render_system::init(
 }
 
 void render_system::work(std::function<void()> fn) {
-  SDL_SetRenderDrawColor(renderer__, r__, g__, b__, a__);
-  SDL_RenderClear(renderer__);
-
   fn();
-
-  SDL_RenderPresent(renderer__);
+  update();
+  clear();
 }
