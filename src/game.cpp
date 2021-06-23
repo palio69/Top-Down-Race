@@ -292,14 +292,9 @@ void game::play() {
 
 
 
-  auto update = [&car1] (const Uint8* key) {
+  auto update = [&car1, &tm, &cam1] (const Uint8* key) {
     car1.update(key);
-  };
-
-
-  auto render = [&tm, &car1, &cam1] {
-    tm.render(cam1);
-    car1.render();
+    tm.update(cam1);
   };
 
 
@@ -319,9 +314,10 @@ void game::play() {
     }
 
     const Uint8* key = SDL_GetKeyboardState(nullptr);
-
     update(key);
-    render_system::work(render);
+
+    texture_system::work();
+    render_system::work();
 
   }
 

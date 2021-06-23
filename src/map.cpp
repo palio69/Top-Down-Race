@@ -23,7 +23,7 @@ void tile_map::add_tile(const tile new_tile) {
   this->tiles.push_back(new_tile);
 }
 
-void tile_map::render(const camera cam) const {
+void tile_map::update(const camera cam) const {
   const vec2f camera_pos = cam.get_camera_pos(),
     window_wh = cam.get_window_wh(),
     camera_wh = camera_pos + window_wh;
@@ -58,8 +58,9 @@ void tile_map::render(const camera cam) const {
       const auto& t = this->tiles[i];
       des.x = x * des.w - camera_pos.x;
       des.y = y * des.h - camera_pos.y;
+      const picture texture = { t.sprite.src, des };
 
-      render_system::render( { t.sprite.src, des } );
+      texture_system::add_texture(texture);
 
     }
 

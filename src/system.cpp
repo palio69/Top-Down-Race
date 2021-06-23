@@ -22,16 +22,24 @@ void time_system::work() {
 
 std::string texture_system::path__;
 SDL_Texture* texture_system::main_textures__;
-std::vector<picture> texture_system::textures__;
+std::stack<picture> texture_system::render_textures__;
 
 void texture_system::init() {
   path__ = "assets/Top Down Race Sprites.png";
   main_textures__ = IMG_LoadTexture(render_system::renderer(), path__.data());
-  textures__ = { };
+  render_textures__ = { };
 }
 
 void texture_system::work() {
-  render_list(textures);
+
+  while (!(render_textures__.empty())) {
+
+    const auto texture = render_textures__.top();
+    render_system::add_to_stack(texture);
+    render_textures__.pop();
+
+  }
+
 }
 
 
@@ -42,12 +50,11 @@ int render_system::r__,
   render_system::g__,
   render_system::b__,
   render_system::a__;
-std::vector<picture> render_system::render_list__;
+std::stack<picture> render_system::render_stack__;
 
 void render_system::clear() {
   SDL_SetRenderDrawColor(renderer__, r__, g__, b__, a__);
   SDL_RenderClear(renderer__);
-  render_list__.clear();
 }
 
 void render_system::render(const picture& pic) {
@@ -80,14 +87,18 @@ void render_system::init(
   g__ = g;
   b__ = b;
   a__ = a;
-  render_list__ = { };
+  render_stack__ = { };
 }
 
-void render_system::work(std::function<void()> fn) {
-  fn();
+void render_system::work() {
 
-  for (const auto pic : render_list__)
-    render(pic);
+  while (!(render_stack__.empty())) {
+
+    const auto texture = render_stack__.top();
+    render(texture);
+    render_stack__.pop();
+
+  }
 
   update();
   clear();

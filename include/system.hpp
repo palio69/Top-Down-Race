@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <stack>
 #include <functional>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -35,12 +35,12 @@ private:
   static std::string path__;
   static SDL_Texture* main_textures__;
 
-  static std::vector<picture> textures__;
+  static std::stack<picture> render_textures__;
 
 public:
   static SDL_Texture* main_textures() { return main_textures__; }
 
-  static void add_texture(const picture& texture) { textures__.push_back(texture); }
+  static void add_texture(const picture texture) { render_textures__.push(texture); }
   static void quit() { SDL_DestroyTexture(main_textures__); }
 
   static void init();
@@ -57,13 +57,13 @@ private:
   static SDL_Renderer* renderer__;
   static int r__, g__, b__, a__;
 
-  static std::vector<picture> render_list__;
+  static std::stack<picture> render_stack__;
 
   static void clear();
   static void update() { SDL_RenderPresent(renderer__); }
 
 public:
-  static void render_list(const std::vector<picture>& pic) { render_list__ = pics }
+  static void add_to_stack(const picture pic) { render_stack__.push(pic); }
 
   static SDL_Window* window() { return window__; }
   static SDL_Renderer* renderer() { return renderer__; }
@@ -82,6 +82,6 @@ public:
 
 		   const int r, const int g, const int b, const int a
 		   );
-  static void work(std::function<void()> fn);
+  static void work();
 
 };

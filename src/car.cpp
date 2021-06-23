@@ -86,4 +86,5 @@ void car::update_sprite() {
   this->sprite.des.x = this->pos.x - this->cam.get_camera_pos().x;
   this->sprite.des.y = this->pos.y - this->cam.get_camera_pos().y;
   this->sprite.angle = this->angle;
+  texture_system::add_texture(this->sprite);
 }

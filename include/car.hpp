@@ -49,6 +49,5 @@ public:
   ~car() { }
 
   void update(const Uint8* key);
-  void render() const { render_system::render(this->sprite); }
 
 };

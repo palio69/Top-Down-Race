@@ -37,6 +37,6 @@ public:
   void add_to_map(const std::string tiles);
   void add_tile(const tile new_tile);
 
-  void render(const camera cam) const;
+  void update(const camera cam) const;
 
 };
