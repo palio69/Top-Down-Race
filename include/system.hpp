@@ -2,6 +2,7 @@
 
 #include <string>
 #include <stack>
+#include <queue>
 #include <functional>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -57,13 +58,13 @@ private:
   static SDL_Renderer* renderer__;
   static int r__, g__, b__, a__;
 
-  static std::stack<picture> render_stack__;
+  static std::queue<picture> render_queue__;
 
   static void clear();
   static void update() { SDL_RenderPresent(renderer__); }
 
 public:
-  static void add_to_stack(const picture pic) { render_stack__.push(pic); }
+  static void add_to_queue(const picture pic) { render_queue__.push(pic); }
 
   static SDL_Window* window() { return window__; }
   static SDL_Renderer* renderer() { return renderer__; }
