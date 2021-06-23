@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <functional>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -34,6 +35,8 @@ private:
   static std::string path__;
   static SDL_Texture* main_textures__;
 
+  static std::vector<picture> textures__;
+
 public:
   static SDL_Texture* main_textures() { return main_textures__; }
 
@@ -57,6 +60,7 @@ private:
   static void update() { SDL_RenderPresent(renderer__); }
 
 public:
+  static std::vector<picture> render_list__;
   static SDL_Window* window() { return window__; }
   static SDL_Renderer* renderer() { return renderer__; }
 
