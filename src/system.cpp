@@ -31,7 +31,7 @@ void texture_system::init() {
 }
 
 void texture_system::work() {
-  render_system::render_list__ = textures__;
+  render_list(textures);
 }
 
 
@@ -85,6 +85,10 @@ void render_system::init(
 
 void render_system::work(std::function<void()> fn) {
   fn();
+
+  for (const auto pic : render_list__)
+    render(pic);
+
   update();
   clear();
 }
