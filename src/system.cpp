@@ -42,11 +42,11 @@ void render_system::clear() {
   SDL_RenderClear(renderer__);
 }
 
-void render_system::render(const image& img) {
+void render_system::render(const picture& pic) {
   SDL_RenderCopyEx(
 		   renderer__, texture_system::main_textures(),
-		   &(img.src), &(img.des),
-		   img.angle, img.center, img.flip
+		   &(pic.src), &(pic.des),
+		   pic.angle, pic.center, pic.flip
 		   );
 }
 

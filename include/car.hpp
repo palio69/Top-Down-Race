@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <system.hpp>
 #include <vec2f.hpp>
-#include <image.hpp>
+#include <picture.hpp>
 #include <camera.hpp>
 #include <map.hpp>
 
@@ -21,7 +21,7 @@ private:
   double angle;
 
   camera& cam;
-  image sprite;
+  picture sprite;
 
   void update_data(const Uint8* key, const double angle_modifier);
   void update_physics(const float friction);
@@ -35,7 +35,7 @@ public:
       const double angle,
 
       camera& cam,
-      const image sprite
+      const picture sprite
       ) :
     origin(origin), pos(origin),
     speed(0.0f), goal_speed(0.0f),

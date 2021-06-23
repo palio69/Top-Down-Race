@@ -4,7 +4,7 @@
 #include <functional>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <image.hpp>
+#include <picture.hpp>
 
 
 
@@ -60,7 +60,7 @@ public:
   static SDL_Window* window() { return window__; }
   static SDL_Renderer* renderer() { return renderer__; }
 
-  static void render(const image& img);
+  static void render(const picture& pic);
   static void quit();
 
   static void init(

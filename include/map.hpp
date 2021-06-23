@@ -5,11 +5,11 @@
 #include <SDL2/SDL.h>
 #include <system.hpp>
 #include <camera.hpp>
-#include <image.hpp>
+#include <picture.hpp>
 
 struct tile {
   char id;
-  image sprite;
+  picture sprite;
 
 };
 

@@ -4,7 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <system.hpp>
 #include <vec2f.hpp>
-#include <image.hpp>
+#include <picture.hpp>
 #include <map.hpp>
 #include <car.hpp>
 

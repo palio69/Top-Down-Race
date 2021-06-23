@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-struct image {
+struct picture {
   SDL_Rect src = { 0, 0, 0, 0 },
     des = { 0, 0, 0, 0 };
   double angle = 0.0;
