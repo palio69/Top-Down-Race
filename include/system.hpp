@@ -10,45 +10,6 @@
 
 
 
-class time_system {
-private:
-  time_system() { }
-  ~time_system() { }
-
-  static float current_time__,
-    next_time__,
-    delta_time__;
-
-public:
-  static float delta_time() { return delta_time__; }
-  static float time() { return SDL_GetTicks() / 1000.0f; }
-
-  static void init();
-  static void work();
-
-};
-
-class texture_system {
-private:
-  texture_system() { }
-  ~texture_system() { }
-
-  static std::string path__;
-  static SDL_Texture* main_textures__;
-
-  static std::stack<picture> render_textures__;
-
-public:
-  static SDL_Texture* main_textures() { return main_textures__; }
-
-  static void add_texture(const picture texture) { render_textures__.push(texture); }
-  static void quit() { SDL_DestroyTexture(main_textures__); }
-
-  static void init();
-  static void work();
-
-};
-
 class render_system {
 private:
   render_system() { }
@@ -83,6 +44,45 @@ public:
 
 		   const int r, const int g, const int b, const int a
 		   );
+  static void work();
+
+};
+
+class texture_system {
+private:
+  texture_system() { }
+  ~texture_system() { }
+
+  static std::string path__;
+  static SDL_Texture* main_textures__;
+
+  static std::stack<picture> render_textures__;
+
+public:
+  static SDL_Texture* main_textures() { return main_textures__; }
+
+  static void add_texture(const picture texture) { render_textures__.push(texture); }
+  static void quit() { SDL_DestroyTexture(main_textures__); }
+
+  static void init();
+  static void work();
+
+};
+
+class time_system {
+private:
+  time_system() { }
+  ~time_system() { }
+
+  static float current_time__,
+    next_time__,
+    delta_time__;
+
+public:
+  static float delta_time() { return delta_time__; }
+  static float time() { return SDL_GetTicks() / 1000.0f; }
+
+  static void init();
   static void work();
 
 };
