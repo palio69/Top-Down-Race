@@ -4,8 +4,13 @@
 #include <stack>
 #include <queue>
 #include <functional>
+#include <bitset>
+#include <map>
+#include <cstddef>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
 #include <picture.hpp>
 
 
@@ -84,5 +89,29 @@ public:
 
   static void init();
   static void work();
+
+};
+
+class ECS {
+public:
+  typedef std::uint8_t   entity;
+  static constexpr entity max_entities = __UINT8_MAX__;
+
+  typedef std::bitset<max_entities>   component_bits;
+
+private:
+
+  class entity_manager {
+  private:
+    static entity index__;
+    static std::map<entity, component_bits> entities__;
+
+  public:
+    static entity add_entity();
+    static void destroy_entity(const entity ent);
+
+    static void access_entities(std::function<void(const entity&, const component_bits&)>& access);
+
+  };
 
 };

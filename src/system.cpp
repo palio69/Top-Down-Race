@@ -101,3 +101,23 @@ void time_system::work() {
   delta_time__ = next_time__ - current_time__;
   current_time__ = next_time__;
 }
+
+
+ECS::entity ECS::entity_manager::index__ = 0;
+std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__;
+
+ECS::entity ECS::entity_manager::add_entity() {
+  entities__[index__] = 0;
+  return index__++;
+}
+
+void ECS::entity_manager::destroy_entity(const entity ent) {
+  entities__[ent].reset();
+}
+
+void ECS::entity_manager::access_entities(std::function<void(const entity&, const component_bits&)>& access) {
+
+  for (const auto& ent : entities__)
+    access(ent.first, ent.second);
+
+}
