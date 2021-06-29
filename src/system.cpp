@@ -103,14 +103,14 @@ void time_system::work() {
 }
 
 
-ECS::entity ECS::entity_manager::index__ = 0;
+unsigned ECS::entity_manager::index__ = 0;
 std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__ { };
 
 std::vector<ECS::entity_manager::function> ECS::entity_manager::observers__ { };
 
 void ECS::entity_manager::call_observers(const ECS::entity ent) {
 
-  for (const auto obs : observers__) {
+  for (const auto& obs : observers__) {
 
     const auto& ent_bits = entities__[ent];
     obs(ent, ent_bits);
@@ -119,19 +119,26 @@ void ECS::entity_manager::call_observers(const ECS::entity ent) {
 
 }
 
-ECS::entity ECS::entity_manager::add_entity() {
-  entities__[index__] = 0;
-  return index__++;
+ECS::entity ECS::entity_manager::add_entity(const ECS::component_bits ent_bits) {
+  if (entities__.size() >= max_entities) {
+    std::cout << "ERROR: could not add entity" << std::endl;
+    return index__;
+  }
+
+  const entity new_ent = index__++;
+
+  entities__[new_ent] = ent_bits;
+  call_observers(new_ent);
+  return new_ent;
 }
 
 void ECS::entity_manager::destroy_entity(const ECS::entity ent) {
+  if (entities__.find(ent) == entities__.cend()) {
+    std::cout << "ERROR: could not destroy entity" << std::endl;
+    return;
+  }
+
   entities__[ent].reset();
+  call_observers(ent);
   entities__.erase(ent);
-}
-
-void ECS::entity_manager::access_entities(ECS::entity_manager::function& access) {
-
-  for (const auto& ent : entities__)
-    access(ent.first, ent.second);
-
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <stack>
 #include <queue>
@@ -97,8 +98,8 @@ public:
   using entity = std::uint8_t;
   static constexpr entity max_entities = __UINT8_MAX__;
 
-  using component_bits = std::bitset<max_entities>;
   static constexpr std::uint8_t max_components = __UINT8_MAX__;
+  using component_bits = std::bitset<max_components>;
 
 private:
   ECS() { }
@@ -112,7 +113,7 @@ private:
     entity_manager() { }
     ~entity_manager() { }
 
-    static entity index__;
+    static unsigned index__;
     static std::map<entity, component_bits> entities__;
 
     static std::vector<function> observers__;
@@ -120,14 +121,13 @@ private:
     static void call_observers(const entity ent);
 
   public:
-    static entity add_entity();
+    static void add_observer(function& observer) { observers__.push_back(observer); }
+
+    static entity add_entity(const component_bits ent_bits = 0);
     static void destroy_entity(const entity ent);
 
     static void bits(const entity ent, const component_bits ent_bits) { entities__[ent] = ent_bits; call_observers(ent); }
     static component_bits bits(const entity ent) { return entities__[ent]; }
-    static void add_observer_to_bits(function& observer) { observers__.push_back(observer); }
-
-    static void access_entities(function& access);
 
   };
 
