@@ -98,11 +98,17 @@ public:
   static constexpr entity max_entities = __UINT8_MAX__;
 
   using component_bits = std::bitset<max_entities>;
+  static constexpr std::uint8_t max_components = __UINT8_MAX__;
 
 private:
+  ECS() { }
+  ~ECS() { }
 
   class entity_manager {
   private:
+    entity_manager() { }
+    ~entity_manager() { }
+
     static entity index__;
     static std::map<entity, component_bits> entities__;
 
@@ -114,6 +120,33 @@ private:
     static component_bits bits(const entity ent) { return entities__[ent]; }
 
     static void access_entities(std::function<void(const entity&, const component_bits&)>& access);
+
+  };
+
+
+
+  class virtual_component_array {
+  public:
+    virtual ~virtual_component_array() { }
+
+  };
+
+  template<class T>
+  class component_array : public virtual_component_array {
+  private:
+    std::array<T, max_entities> array__;
+    const int index = 0;
+
+  public:
+    T& get_data(const entity ent) { return this->array__[ent]; }
+    void add_data(const entity ent, const T data) {}
+
+  };
+
+  class component_manager {
+  private:
+    component_manager() { }
+    ~component_manager() { }
 
   };
 
