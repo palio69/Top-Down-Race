@@ -105,6 +105,9 @@ private:
   ~ECS() { }
 
   class entity_manager {
+  public:
+    using function = std::function<void(const entity&, const component_bits&)>;
+
   private:
     entity_manager() { }
     ~entity_manager() { }
@@ -112,14 +115,19 @@ private:
     static entity index__;
     static std::map<entity, component_bits> entities__;
 
+    static std::vector<function> observers__;
+
+    static void call_observers(const entity ent);
+
   public:
     static entity add_entity();
     static void destroy_entity(const entity ent);
 
-    static void bits(const entity ent, const component_bits ent_bits) { entities__[ent] = ent_bits; }
+    static void bits(const entity ent, const component_bits ent_bits) { entities__[ent] = ent_bits; call_observers(ent); }
     static component_bits bits(const entity ent) { return entities__[ent]; }
+    static void add_observer_to_bits(function& observer) { observers__.push_back(observer); }
 
-    static void access_entities(std::function<void(const entity&, const component_bits&)>& access);
+    static void access_entities(function& access);
 
   };
 

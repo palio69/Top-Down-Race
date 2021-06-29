@@ -104,19 +104,32 @@ void time_system::work() {
 
 
 ECS::entity ECS::entity_manager::index__ = 0;
-std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__;
+std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__ { };
+
+std::vector<ECS::entity_manager::function> ECS::entity_manager::observers__ { };
+
+void ECS::entity_manager::call_observers(const ECS::entity ent) {
+
+  for (const auto obs : observers__) {
+
+    const auto& ent_bits = entities__[ent];
+    obs(ent, ent_bits);
+
+  }
+
+}
 
 ECS::entity ECS::entity_manager::add_entity() {
   entities__[index__] = 0;
   return index__++;
 }
 
-void ECS::entity_manager::destroy_entity(const entity ent) {
+void ECS::entity_manager::destroy_entity(const ECS::entity ent) {
   entities__[ent].reset();
   entities__.erase(ent);
 }
 
-void ECS::entity_manager::access_entities(std::function<void(const entity&, const component_bits&)>& access) {
+void ECS::entity_manager::access_entities(ECS::entity_manager::function& access) {
 
   for (const auto& ent : entities__)
     access(ent.first, ent.second);
