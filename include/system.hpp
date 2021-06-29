@@ -94,10 +94,10 @@ public:
 
 class ECS {
 public:
-  typedef std::uint8_t   entity;
+  using entity = std::uint8_t;
   static constexpr entity max_entities = __UINT8_MAX__;
 
-  typedef std::bitset<max_entities>   component_bits;
+  using component_bits = std::bitset<max_entities>;
 
 private:
 
@@ -109,6 +109,9 @@ private:
   public:
     static entity add_entity();
     static void destroy_entity(const entity ent);
+
+    static void bits(const entity ent, const component_bits ent_bits) { entities__[ent] = ent_bits; }
+    static component_bits bits(const entity ent) { return entities__[ent]; }
 
     static void access_entities(std::function<void(const entity&, const component_bits&)>& access);
 
