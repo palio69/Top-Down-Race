@@ -113,6 +113,7 @@ ECS::entity ECS::entity_manager::add_entity() {
 
 void ECS::entity_manager::destroy_entity(const entity ent) {
   entities__[ent].reset();
+  entities__.erase(ent);
 }
 
 void ECS::entity_manager::access_entities(std::function<void(const entity&, const component_bits&)>& access) {
