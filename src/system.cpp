@@ -142,3 +142,24 @@ void ECS::entity_manager::destroy_entity(const ECS::entity ent) {
   call_observers(ent);
   entities__.erase(ent);
 }
+
+template<class T>
+void ECS::component_array<T>::component(const ECS::entity ent, const T data) {
+  if (this->components__.size() >= max_entities) {
+    std::cout << "ERROR: could not add/change component" << std::endl;
+    return;
+  }
+
+  components__[ent] = data;
+}
+
+template<class T>
+T* ECS::component_array<T>::component(const ECS::entity ent) {
+  if (this->components__.find(ent) == this->components__.cend()) {
+    std::cout << "ERROR: could not find component" << std::endl;
+    return nullptr;
+  }
+
+  T* ptr = &(this->components__[ent]);
+  return ptr;
+}

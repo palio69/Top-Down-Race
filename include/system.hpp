@@ -133,21 +133,20 @@ private:
 
 
 
-  class virtual_component_array {
+  class base_component_array {
   public:
-    virtual ~virtual_component_array() { }
+    virtual ~base_component_array() { }
 
   };
 
   template<class T>
-  class component_array : public virtual_component_array {
+  class component_array : public base_component_array {
   private:
-    std::array<T, max_entities> array__;
-    const int index = 0;
+    std::map<entity, T> components__;
 
   public:
-    T& get_data(const entity ent) { return this->array__[ent]; }
-    void add_data(const entity ent, const T data) {}
+    void component(const entity ent, const T data);
+    T* component(const entity ent);
 
   };
 
