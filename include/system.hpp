@@ -137,6 +137,8 @@ private:
   public:
     virtual ~base_component_array() { }
 
+    virtual void remove_component(const entity ent) = 0;
+
   };
 
   template<class T>
@@ -147,6 +149,7 @@ private:
   public:
     void component(const entity ent, const T data);
     T* component(const entity ent);
+    void remove_component(const entity ent) override;
 
   };
 
