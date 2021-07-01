@@ -137,18 +137,21 @@ private:
 
 
 
-  class base_component_array {
+  class base_component_container {
   public:
-    virtual ~base_component_array() { }
+    virtual ~base_component_container() { }
 
     virtual void remove_component(const entity ent) = 0;
 
   };
 
   template<class T>
-  class component_array : public base_component_array {
+  class component_container : public base_component_container {
   private:
     std::map<entity, T> components__;
+
+    bool max_size() const { return (this->components__.size() >= max_entities); }
+    bool found(const entity ent) const { return (this->components__.find(ent) != this->components__.cend()); }
 
   public:
     void component(const entity ent, const T data);
@@ -164,7 +167,7 @@ private:
 
     static component_id current_id__;
     static std::map<const char*, component_id> ids__;
-    static std::map<component_id, std::shared_ptr<base_component_array>> containers__;
+    static std::map<component_id, std::shared_ptr<base_component_container>> containers__;
 
   public:
     template<class T>

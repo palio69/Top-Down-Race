@@ -103,6 +103,8 @@ void time_system::work() {
 }
 
 
+
+// Entity Manager
 unsigned ECS::entity_manager::index__ = 0;
 std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__ { };
 
@@ -143,9 +145,10 @@ void ECS::entity_manager::destroy_entity(const ECS::entity ent) {
   entities__.erase(ent);
 }
 
+// Component Container
 template<class T>
-void ECS::component_array<T>::component(const ECS::entity ent, const T data) {
-  if (this->components__.size() >= max_entities) {
+void ECS::component_container<T>::component(const ECS::entity ent, const T data) {
+  if (this->max_size()) {
     std::cout << "ERROR: could not add component" << std::endl;
     return;
   }
@@ -154,8 +157,8 @@ void ECS::component_array<T>::component(const ECS::entity ent, const T data) {
 }
 
 template<class T>
-T* ECS::component_array<T>::component(const ECS::entity ent) {
-  if (this->components__.find(ent) == this->components__.cend()) {
+T* ECS::component_container<T>::component(const ECS::entity ent) {
+  if (!(this->found(ent))) {
     std::cout << "ERROR: could not find component" << std::endl;
     return nullptr;
   }
@@ -165,8 +168,8 @@ T* ECS::component_array<T>::component(const ECS::entity ent) {
 }
 
 template<class T>
-void ECS::component_array<T>::remove_component(const ECS::entity ent) {
-  if (this->components__.find(ent) == this->components__.cend()) {
+void ECS::component_container<T>::remove_component(const ECS::entity ent) {
+  if (!(this->found(ent))) {
     std::cout << "ERROR: could not remove component" << std::endl;
     return;
   }
@@ -174,9 +177,10 @@ void ECS::component_array<T>::remove_component(const ECS::entity ent) {
   this->components__.erase(ent);
 }
 
+// Component Manager
 ECS::component_id ECS::component_manager::current_id__ = 0;
 std::map<const char*, ECS::component_id> ECS::component_manager::ids__ { };
-std::map<ECS::component_id, std::shared_ptr<ECS::base_component_array>> ECS::component_manager::containers__ { };
+std::map<ECS::component_id, std::shared_ptr<ECS::base_component_container>> ECS::component_manager::containers__ { };
 
 template<class T>
 void ECS::component_manager::register_component() {
@@ -190,7 +194,7 @@ void ECS::component_manager::register_component() {
   const component_id id = current_id__++;
 
   ids__[name] = id;
-  containers__[id] = std::make_shared<base_component_array>(component_array<T>());
+  containers__[id] = std::make_shared<base_component_container>(component_container<T>());
 }
 
 template<class T>
@@ -210,7 +214,7 @@ void ECS::component_manager::component(const ECS::entity ent, const T data) {
   const char* name = typeid(T).name();
   const component_id id = ids__[name];
 
-  auto& components = dynamic_cast<component_array<T>>(containers__[id]);
+  auto& components = dynamic_cast<component_container<T>>(containers__[id]);
   components->component(ent, data);
 }
 
@@ -219,7 +223,7 @@ T* ECS::component_manager::component(const ECS::entity ent) {
   const char* name = typeid(T).name();
   const component_id id = ids__[name];
 
-  auto& components = dynamic_cast<component_array<T>>(containers__[id]);
+  auto& components = dynamic_cast<component_container<T>>(containers__[id]);
 
   T* ptr = components->component(ent);
   return ptr;
