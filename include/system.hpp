@@ -7,6 +7,9 @@
 #include <functional>
 #include <bitset>
 #include <map>
+#include <memory>
+#include <typeinfo>
+
 #include <cstddef>
 
 #include <SDL2/SDL.h>
@@ -98,7 +101,8 @@ public:
   using entity = std::uint8_t;
   static constexpr entity max_entities = __UINT8_MAX__;
 
-  static constexpr std::uint8_t max_components = __UINT8_MAX__;
+  using component_id = std::uint8_t;
+  static constexpr component_id max_components = __UINT8_MAX__;
   using component_bits = std::bitset<max_components>;
 
 private:
@@ -157,6 +161,23 @@ private:
   private:
     component_manager() { }
     ~component_manager() { }
+
+    static component_id current_id__;
+    static std::map<const char*, component_id> ids__;
+    static std::map<component_id, std::shared_ptr<base_component_array>> containers__;
+
+  public:
+    template<class T>
+    static void register_component();
+
+    template<class T>
+    static component_id id();
+
+    template<class T>
+    static void component(const entity ent, const T data);
+
+    template<class T>
+    static T* component(const entity ent);
 
   };
 

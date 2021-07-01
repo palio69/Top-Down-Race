@@ -173,3 +173,54 @@ void ECS::component_array<T>::remove_component(const ECS::entity ent) {
 
   this->components__.erase(ent);
 }
+
+ECS::component_id ECS::component_manager::current_id__ = 0;
+std::map<const char*, ECS::component_id> ECS::component_manager::ids__ { };
+std::map<ECS::component_id, std::shared_ptr<ECS::base_component_array>> ECS::component_manager::containers__ { };
+
+template<class T>
+void ECS::component_manager::register_component() {
+  const char* name = typeid(T).name();
+
+  if (ids__.find(name) != ids__.cend()) {
+    std::cout << "ERROR: could not register component" << std::endl;
+    return;
+  }
+
+  const component_id id = current_id__++;
+
+  ids__[name] = id;
+  containers__[id] = std::make_shared<base_component_array>(component_array<T>());
+}
+
+template<class T>
+ECS::component_id ECS::component_manager::id() {
+  const char* name = typeid(T).name();
+
+  if (ids__.find(name) == ids__.cend()) {
+    std::cout << "ERROR: could not find component" << std::endl;
+    return current_id__;
+  }
+
+  return ids__[name];
+}
+
+template<class T>
+void ECS::component_manager::component(const ECS::entity ent, const T data) {
+  const char* name = typeid(T).name();
+  const component_id id = ids__[name];
+
+  auto& components = dynamic_cast<component_array<T>>(containers__[id]);
+  components->component(ent, data);
+}
+
+template<class T>
+T* ECS::component_manager::component(const ECS::entity ent) {
+  const char* name = typeid(T).name();
+  const component_id id = ids__[name];
+
+  auto& components = dynamic_cast<component_array<T>>(containers__[id]);
+
+  T* ptr = components->component(ent);
+  return ptr;
+}
