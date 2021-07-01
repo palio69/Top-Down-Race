@@ -169,6 +169,9 @@ private:
     static std::map<const char*, component_id> ids__;
     static std::map<component_id, std::shared_ptr<base_component_container>> containers__;
 
+    static bool max_size() { return (containers__.size() >= max_components); }
+    static bool found(const char* name) { return (ids__.find(name) != ids__.cend()); }
+
   public:
     template<class T>
     static void register_component();
@@ -180,7 +183,7 @@ private:
     static void component(const entity ent, const T data);
 
     template<class T>
-    static T* component(const entity ent);
+    static T& component(const entity ent);
 
   };
 

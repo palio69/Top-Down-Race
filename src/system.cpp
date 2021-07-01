@@ -186,7 +186,7 @@ template<class T>
 void ECS::component_manager::register_component() {
   const char* name = typeid(T).name();
 
-  if (ids__.find(name) != ids__.cend()) {
+  if (found(name) || max_size()) {
     std::cout << "ERROR: could not register component" << std::endl;
     return;
   }
@@ -201,7 +201,7 @@ template<class T>
 ECS::component_id ECS::component_manager::id() {
   const char* name = typeid(T).name();
 
-  if (ids__.find(name) == ids__.cend()) {
+  if (!found(name)) {
     std::cout << "ERROR: could not find component" << std::endl;
     return current_id__;
   }
@@ -212,19 +212,30 @@ ECS::component_id ECS::component_manager::id() {
 template<class T>
 void ECS::component_manager::component(const ECS::entity ent, const T data) {
   const char* name = typeid(T).name();
-  const component_id id = ids__[name];
 
+  if (!found(name)) {
+    std::cout << "ERROR: could not find component" << std::endl;
+    return;
+  }
+
+  const component_id id = ids__[name];
   auto& components = dynamic_cast<component_container<T>>(containers__[id]);
+
   components->component(ent, data);
 }
 
 template<class T>
-T* ECS::component_manager::component(const ECS::entity ent) {
+T& ECS::component_manager::component(const ECS::entity ent) {
   const char* name = typeid(T).name();
-  const component_id id = ids__[name];
 
+  if (!found(name)) {
+    std::cout << "ERROR: could not find component" << std::endl;
+    return nullptr;
+  }
+
+  const component_id id = ids__[name];
   auto& components = dynamic_cast<component_container<T>>(containers__[id]);
 
   T* ptr = components->component(ent);
-  return ptr;
+  return *ptr;
 }
