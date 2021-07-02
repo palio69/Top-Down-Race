@@ -105,7 +105,7 @@ public:
   static constexpr component_id max_components = __UINT8_MAX__;
   using component_bits = std::bitset<max_components>;
 
-private:
+  //private:
   ECS() { }
   ~ECS() { }
 
@@ -154,9 +154,33 @@ private:
     bool found(const entity ent) const { return (this->components__.find(ent) != this->components__.cend()); }
 
   public:
-    void component(const entity ent, const T data);
-    T* component(const entity ent);
-    void remove_component(const entity ent) override;
+    void component(const entity ent, const T data) {
+      if (this->max_size()) {
+	std::cout << "ERROR: could not add component" << std::endl;
+	return;
+      }
+
+      this->components__[ent] = data;
+    }
+
+    const T* component(const entity ent) {
+      if (!(this->found(ent))) {
+	std::cout << "ERROR: could not find component" << std::endl;
+	return nullptr;
+      }
+
+      const T* comp = &(this->components__[ent]);
+      return comp;
+    }
+
+    void remove_component(const entity ent) override {
+      if (!(this->found(ent))) {
+	std::cout << "ERROR: could not remove component" << std::endl;
+	return;
+      }
+
+      this->components__.erase(ent);
+    }
 
   };
 
@@ -174,16 +198,64 @@ private:
 
   public:
     template<class T>
-    static void register_component();
+    static void register_component() {
+      const char* name = typeid(T).name();
+
+      if (found(name) || max_size()) {
+	std::cout << "ERROR: could not register component" << std::endl;
+	return;
+      }
+
+      const component_id id = current_id__++;
+
+      ids__[name] = id;
+      containers__[id] = std::make_shared<component_container<T>>();
+    }
+
+
 
     template<class T>
-    static component_id id();
+    static component_id id() {
+      const char* name = typeid(T).name();
+
+      if (!found(name)) {
+	std::cout << "ERROR: could not find component" << std::endl;
+	return current_id__;
+      }
+
+      return ids__[name];
+    }
 
     template<class T>
-    static void component(const entity ent, const T data);
+    static void component(const entity ent, const T data) {
+      const char* name = typeid(T).name();
+
+      if (!found(name)) {
+	std::cout << "ERROR: could not find component" << std::endl;
+	return;
+      }
+
+      const component_id id = ids__[name];
+      std::shared_ptr<component_container<T>> components = std::static_pointer_cast<component_container<T>>(containers__[id]);
+
+      components->component(ent, data);
+    }
 
     template<class T>
-    static T& component(const entity ent);
+    static const T* component(const entity ent) {
+      const char* name = typeid(T).name();
+
+      if (!found(name)) {
+	std::cout << "ERROR: could not find component" << std::endl;
+	return nullptr;
+      }
+
+      const component_id id = ids__[name];
+      std::shared_ptr<component_container<T>> components = std::static_pointer_cast<component_container<T>>(containers__[id]);
+
+      return components->component(ent);
+    }
+
 
   };
 

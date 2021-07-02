@@ -254,6 +254,8 @@ void game::init() {
 
 }
 
+struct ms { float max_speed; } bruh;
+
 void game::play() {
   try { game::init(); }
 
@@ -275,6 +277,12 @@ void game::play() {
   cam.init();
   time_system::init();
 
+  bruh.max_speed = player.max_speed;
+
+  const ECS::entity flushed = ECS::entity_manager::add_entity();
+  ECS::component_manager::register_component<ms>();
+  ECS::component_manager::component(flushed, bruh);
+
   tile_map tm(map.first_row, map.tw, map.th);
   tm.add_to_map(map.tiles);
   tm.add_tile(map.origin_tile);
@@ -284,7 +292,7 @@ void game::play() {
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(
-	   player.origin, player.max_speed,
+	   player.origin, ECS::component_manager::component<ms>(flushed)->max_speed,
 	   player.acceleration, player.deceleration,
 	   player.angle,
 
