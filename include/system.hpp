@@ -105,14 +105,13 @@ public:
   static constexpr component_id max_components = __UINT8_MAX__;
   using component_bits = std::bitset<max_components>;
 
-  //private:
+  using function = std::function<void(const entity&, const component_bits&)>;
+
+private:
   ECS() { }
   ~ECS() { }
 
   class entity_manager {
-  public:
-    using function = std::function<void(const entity&, const component_bits&)>;
-
   private:
     entity_manager() { }
     ~entity_manager() { }
@@ -127,7 +126,7 @@ public:
   public:
     static void add_observer(function& observer) { observers__.push_back(observer); }
 
-    static entity add_entity(const component_bits ent_bits = 0);
+    static entity add_entity(const component_bits ent_bits);
     static void destroy_entity(const entity ent);
 
     static void bits(const entity ent, const component_bits ent_bits) { entities__[ent] = ent_bits; call_observers(ent); }
@@ -258,5 +257,25 @@ public:
 
 
   };
+
+public:
+  static void add_bits_observer(function& observer) { entity_manager::add_observer(observer); }
+
+  static entity add_entity(const component_bits ent_bits = 0) { return entity_manager::add_entity(ent_bits); }
+  static void destroy_entity(const entity ent) { entity_manager::destroy_entity(ent); }
+
+
+
+  template<class T>
+  static void register_component() { component_manager::register_component<T>(); }
+
+  template<class T>
+  static component_id id() { return component_manager::id<T>(); }
+
+  template<class T>
+  static void component(const entity ent, const T data) { component_manager::component<T>(ent, data); }
+
+  template<class T>
+  static const T* component(const entity ent) { return component_manager::component<T>(ent); }
 
 };

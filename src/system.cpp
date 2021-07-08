@@ -108,7 +108,7 @@ void time_system::work() {
 unsigned ECS::entity_manager::index__ = 0;
 std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__ { };
 
-std::vector<ECS::entity_manager::function> ECS::entity_manager::observers__ { };
+std::vector<ECS::function> ECS::entity_manager::observers__ { };
 
 void ECS::entity_manager::call_observers(const ECS::entity ent) {
 
