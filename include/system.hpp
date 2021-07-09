@@ -259,7 +259,20 @@ private:
     }
 
     template<class T>
-    static void remove_component(const entity ent);
+    static void remove_component(const entity ent) {
+      const char* name = typeid(T).name();
+
+      if (!found(name)) {
+	std::cout << "ERROR: could not find component" << std::endl;
+	return;
+      }
+
+      const component_id id = ids__[name];
+      auto components = std::static_pointer_cast<component_container<T>>(containers__[id]);
+
+      components->remove_component(ent);
+    }
+
 
     static void remove_all_components(const entity ent);
 
@@ -280,12 +293,26 @@ public:
   static component_id id() { return component_manager::id<T>(); }
 
   template<class T>
-  static void component(const entity ent, const T data);
+  static void component(const entity ent, const T data) {
+    component_id index = id<T>();
+    component_bits ent_bits = entity_manager::bits(ent);
+    ent_bits.set(index);
+
+    component_manager::component<T>(ent, data);
+    entity_manager::bits(ent, ent_bits);
+  }
 
   template<class T>
   static const T* component(const entity ent) { return component_manager::component<T>(ent); }
 
   template<class T>
-  static void remove_component(const entity ent);
+  static void remove_component(const entity ent) {
+    component_id index = id<T>();
+    component_bits ent_bits = entity_manager::bits(ent);
+    ent_bits.set(index, 0);
+
+    component_manager::remove_component<T>(ent);
+    entity_manager::bits(ent, ent_bits);
+  }
 
 };
