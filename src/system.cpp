@@ -122,7 +122,7 @@ void ECS::entity_manager::call_observers(const ECS::entity ent) {
 }
 
 ECS::entity ECS::entity_manager::add_entity(const ECS::component_bits ent_bits) {
-  if (entities__.size() >= max_entities) {
+  if (max_size()) {
     std::cout << "ERROR: could not add entity" << std::endl;
     return index__;
   }
@@ -135,7 +135,7 @@ ECS::entity ECS::entity_manager::add_entity(const ECS::component_bits ent_bits) 
 }
 
 void ECS::entity_manager::destroy_entity(const ECS::entity ent) {
-  if (entities__.find(ent) == entities__.cend()) {
+  if (!found(ent)) {
     std::cout << "ERROR: could not destroy entity" << std::endl;
     return;
   }
@@ -145,7 +145,74 @@ void ECS::entity_manager::destroy_entity(const ECS::entity ent) {
   entities__.erase(ent);
 }
 
+void ECS::entity_manager::bits(const entity ent, const component_bits ent_bits) {
+  if (!found(ent)) {
+    std::cout << "ERROR: could not find entity" << std::endl;
+    return;
+  }
+
+  entities__[ent] = ent_bits;
+  call_observers(ent);
+}
+
+ECS::component_bits ECS::entity_manager::bits(const ECS::entity ent) {
+  if (!found(ent)) {
+    std::cout << "ERROR: could not find entity" << std::endl;
+    return 0;
+  }
+
+  return entities__[ent];
+}
+
 // Component Manager
 ECS::component_id ECS::component_manager::current_id__ = 0;
 std::map<const char*, ECS::component_id> ECS::component_manager::ids__ { };
 std::map<ECS::component_id, std::shared_ptr<ECS::base_component_container>> ECS::component_manager::containers__ { };
+
+template<class T>
+void ECS::component_manager::remove_component(const ECS::entity ent) {
+  const char* name = typeid(T).name();
+
+  if (!found(name)) {
+    std::cout << "ERROR: could not find component" << std::endl;
+    return;
+  }
+
+  const component_id id = ids__[name];
+  auto components = std::static_pointer_cast<component_container<T>>(containers__[id]);
+
+  components->remove_component(ent);
+}
+
+void ECS::component_manager::remove_all_components(const ECS::entity ent) {
+
+  for (const auto components : containers__)
+    components.second->remove_component(ent);
+
+}
+
+// ECS
+static void destroy_entity(const entity ent) {
+  component_manager::remove_all_components(ent);
+  entity_manager::destroy_entity(ent);
+}
+
+template<class T>
+static void ECS::component(const ECS::entity ent, const T data) {
+  component_id index = id<T>();
+  component_bits ent_bits = entity_manager::bits(ent);
+  ent_bits.set(index);
+
+  component_manager::component<T>(ent, data);
+  entity_manager::bits(ent, ent_bits);
+}
+
+template<class T>
+void ECS::remove_component(const ECS::entity ent) {
+  component_id index = id<T>();
+  component_bits ent_bits = entity_manager::bits(ent);
+  ent_bits.set(index, 0);
+
+  component_manager::remove_component<T>(ent);
+  entity_manager::bits(ent, ent_bits);
+}

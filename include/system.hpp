@@ -116,6 +116,9 @@ private:
     entity_manager() { }
     ~entity_manager() { }
 
+    static bool max_size() { return (entities__.size() >= max_entities); }
+    static bool found(const entity ent) { return (entities__.find(ent) != entities__.cend()); }
+
     static unsigned index__;
     static std::map<entity, component_bits> entities__;
 
@@ -129,10 +132,10 @@ private:
     static entity add_entity(const component_bits ent_bits);
     static void destroy_entity(const entity ent);
 
-    static void bits(const entity ent, const component_bits ent_bits) { entities__[ent] = ent_bits; call_observers(ent); }
-    static component_bits bits(const entity ent) { return entities__[ent]; }
+    static void bits(const entity ent, const component_bits ent_bits);
+    static component_bits bits(const entity ent);
 
-  };
+  }; // entity_manager
 
 
 
@@ -181,7 +184,7 @@ private:
       this->components__.erase(ent);
     }
 
-  };
+  }; // component_container
 
   class component_manager {
   private:
@@ -235,7 +238,7 @@ private:
       }
 
       const component_id id = ids__[name];
-      std::shared_ptr<component_container<T>> components = std::static_pointer_cast<component_container<T>>(containers__[id]);
+      auto components = std::static_pointer_cast<component_container<T>>(containers__[id]);
 
       components->component(ent, data);
     }
@@ -250,19 +253,23 @@ private:
       }
 
       const component_id id = ids__[name];
-      std::shared_ptr<component_container<T>> components = std::static_pointer_cast<component_container<T>>(containers__[id]);
+      auto components = std::static_pointer_cast<component_container<T>>(containers__[id]);
 
       return components->component(ent);
     }
 
+    template<class T>
+    static void remove_component(const entity ent);
 
-  };
+    static void remove_all_components(const entity ent);
+
+  }; // component_manager
 
 public:
   static void add_bits_observer(function& observer) { entity_manager::add_observer(observer); }
 
   static entity add_entity(const component_bits ent_bits = 0) { return entity_manager::add_entity(ent_bits); }
-  static void destroy_entity(const entity ent) { entity_manager::destroy_entity(ent); }
+  static void destroy_entity(const entity ent);
 
 
 
@@ -273,9 +280,12 @@ public:
   static component_id id() { return component_manager::id<T>(); }
 
   template<class T>
-  static void component(const entity ent, const T data) { component_manager::component<T>(ent, data); }
+  static void component(const entity ent, const T data);
 
   template<class T>
   static const T* component(const entity ent) { return component_manager::component<T>(ent); }
+
+  template<class T>
+  static void remove_component(const entity ent);
 
 };
