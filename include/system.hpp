@@ -7,6 +7,7 @@
 #include <functional>
 #include <bitset>
 #include <map>
+#include <set>
 #include <memory>
 #include <typeinfo>
 
@@ -127,7 +128,7 @@ private:
     static void call_observers(const entity ent);
 
   public:
-    static void add_observer(function& observer) { observers__.push_back(observer); }
+    static void add_observer(const function& observer) { observers__.push_back(observer); }
 
     static entity add_entity(const component_bits ent_bits);
     static void destroy_entity(const entity ent);
@@ -279,7 +280,7 @@ private:
   }; // component_manager
 
 public:
-  static void add_bits_observer(function& observer) { entity_manager::add_observer(observer); }
+  static void add_bits_observer(const function& observer) { entity_manager::add_observer(observer); }
 
   static entity add_entity(const component_bits ent_bits = 0) { return entity_manager::add_entity(ent_bits); }
   static void destroy_entity(const entity ent);
@@ -314,5 +315,46 @@ public:
     component_manager::remove_component<T>(ent);
     entity_manager::bits(ent, ent_bits);
   }
+
+
+
+#define SUBSYSTEM(NAME)							\
+  class NAME {								\
+  private:								\
+  NAME() { }								\
+  ~NAME() { }								\
+									\
+  static void found(const ECS::entity ent) {				\
+    return (entities.find(ent) != entities.cend());			\
+  }									\
+  									\
+  static void observer(							\
+		       const ECS::entity& ent,				\
+		       const ECS::component_bits& ent_bits		\
+		       ) { 						\
+    const ECS::component_bits final_bits = ent_bits & subsystem_bits;	\
+    const bool same_bits = (final_bits == subsystem_bits);		\
+    									\
+    if (same_bits && !found(ent))					\
+      entities.insert(ent);						\
+									\
+    else if (!same_bits && found(ent))					\
+      entities.erase(ent);						\
+    									\
+  }									\
+  									\
+  									\
+  static std::set<ECS::entity> entities;				\
+  static ECS::component_bits subsystem_bits;				\
+  									\
+  public:								\
+  static void init(const ECS::component_bits bits) {			\
+    subsystem_bits = bits;						\
+    ECS::add_bits_observer(observer);					\
+  }									\
+  									\
+  static void work();							\
+  									\
+  };
 
 };
