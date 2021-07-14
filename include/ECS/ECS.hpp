@@ -244,6 +244,8 @@ private:
 
   }; // component_manager
 
+
+
 public:
   static void add_bits_observer(const function& observer) { entity_manager::add_observer(observer); }
 
