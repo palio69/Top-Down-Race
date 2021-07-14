@@ -8,6 +8,13 @@
 #include <camera.hpp>
 #include <map.hpp>
 
+struct movement {
+  float max_speed,
+    acceleration,
+    deceleration;
+  double angle = 0.0;
+};
+
 class car {
 private:
   const vec2f origin;
@@ -15,10 +22,7 @@ private:
   float speed,
     goal_speed,
     booster;
-  const float max_speed,
-    acceleration,
-    deceleration;
-  double angle;
+  const ECS::entity ent;
 
   camera& cam;
   picture sprite;
@@ -30,9 +34,7 @@ private:
 public:
   car(
       const vec2f origin,
-      const float max_speed,
-      const float acceleration, const float deceleration,
-      const double angle,
+      const ECS::entity ent,
 
       camera& cam,
       const picture sprite
@@ -40,9 +42,7 @@ public:
     origin(origin), pos(origin),
     speed(0.0f), goal_speed(0.0f),
     booster(1.0f),
-    max_speed(max_speed),
-    acceleration(acceleration), deceleration(deceleration),
-    angle(angle),
+    ent(ent),
 
     cam(cam),
     sprite(sprite) { }

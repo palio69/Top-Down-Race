@@ -143,6 +143,7 @@ struct { // player
     acceleration = 250.0f,
     deceleration = acceleration * 2.0f;
   const double angle = 0.0;
+  const movement move = { max_speed, acceleration, deceleration, angle };
 
 } const player;
 
@@ -254,8 +255,6 @@ void game::init() {
 
 }
 
-struct ms { float max_speed; } bruh;
-
 void game::play() {
   try { game::init(); }
 
@@ -277,11 +276,10 @@ void game::play() {
   cam.init();
   time_system::init();
 
-  bruh.max_speed = player.max_speed;
+  ECS::register_component<movement>();
 
-  const ECS::entity flushed = ECS::add_entity();
-  ECS::register_component<ms>();
-  ECS::component(flushed, bruh);
+  const ECS::entity player_ent = ECS::add_entity();
+  ECS::component(player_ent, player.move);
 
   tile_map tm(map.first_row, map.tw, map.th);
   tm.add_to_map(map.tiles);
@@ -292,10 +290,7 @@ void game::play() {
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(
-	   player.origin, ECS::component<ms>(flushed)->max_speed,
-	   player.acceleration, player.deceleration,
-	   player.angle,
-
+	   player.origin, player_ent,
 	   cam1,
 	   { player.src, player.des }
 	   );

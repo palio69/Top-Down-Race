@@ -13,6 +13,10 @@ void car::update(const Uint8* key) {
 }
 
 void car::update_data(const Uint8* key, const double angle_modifier) {
+  auto data = *(ECS::component<movement>(this->ent));
+  const auto max_speed = data.max_speed;
+  auto angle = data.angle;
+
   const bool up = key[SDL_SCANCODE_UP],
     down = key[SDL_SCANCODE_DOWN],
     left = key[SDL_SCANCODE_LEFT],
@@ -33,35 +37,43 @@ void car::update_data(const Uint8* key, const double angle_modifier) {
 
   if (up_xor_down) {
     if (up)
-      this->goal_speed = this->max_speed * this->booster;
+      this->goal_speed = max_speed * this->booster;
 
     if (down)
-      this->goal_speed = this->max_speed / -4.0f;
+      this->goal_speed = max_speed / -4.0f;
 
   } else
     this->goal_speed = 0.0f;
 
   if (left)
-    this->angle -= angle_modifier;
+    angle -= angle_modifier;
 
   if (right)
-    this->angle += angle_modifier;
+    angle += angle_modifier;
 
   if (z)
     this->pos = this->origin;
+
+  data.angle = angle;
+  ECS::component<movement>(this->ent, data);
 }
 
 void car::update_physics(const float friction) {
+  auto data = *(ECS::component<movement>(this->ent));
+  const auto acceleration = data.acceleration;
+  const auto deceleration = data.deceleration;
+  const auto angle = data.angle;
+
   auto to_radians = [] (const double angle) {
     const double pi = 3.141592654;
     return angle * pi / 180;
   };
 
-  const float final_acceleration = this->acceleration * time_system::delta_time() * friction * this->booster,
-    final_deceleration = this->deceleration * time_system::delta_time() * friction * this->booster,
+  const float final_acceleration = acceleration * time_system::delta_time() * friction * this->booster,
+    final_deceleration = deceleration * time_system::delta_time() * friction * this->booster,
 
-    x_side = std::sin(to_radians(this->angle)),
-    y_side = std::cos(to_radians(this->angle));
+    x_side = std::sin(to_radians(angle)),
+    y_side = std::cos(to_radians(angle));
   const vec2f sides = { x_side, -y_side };
   vec2f final_pos = sides * time_system::delta_time();
 
@@ -83,8 +95,11 @@ void car::update_physics(const float friction) {
 }
 
 void car::update_sprite() {
+  auto data = *(ECS::component<movement>(this->ent));
+  const auto angle = data.angle;
+
   this->sprite.des.x = this->pos.x - this->cam.get_camera_pos().x;
   this->sprite.des.y = this->pos.y - this->cam.get_camera_pos().y;
-  this->sprite.angle = this->angle;
+  this->sprite.angle = angle;
   texture_system::add_texture(this->sprite);
 }
