@@ -14,6 +14,23 @@
 
 
 
+class event_system {
+private:
+  event_system() { }
+  ~event_system() { }
+
+  static bool running__;
+  static SDL_Event event__;
+
+public:
+  static bool running() { return running__; }
+  static const Uint8* key() { return SDL_GetKeyboardState(nullptr); }
+
+  static void init();
+  static void work();
+
+};
+
 class render_system {
 private:
   render_system() { }

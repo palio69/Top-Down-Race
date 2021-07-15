@@ -2,6 +2,26 @@
 
 
 
+bool event_system::running__;
+SDL_Event event_system::event__;
+
+void event_system::init() {
+  running__ = true;
+}
+
+void event_system::work() {
+
+  while (SDL_PollEvent(&event__)) {
+
+    if (event__.type == SDL_QUIT)
+      running__ = false;
+
+  }
+
+}
+
+
+
 SDL_Window* render_system::window__;
 SDL_Renderer* render_system::renderer__;
 int render_system::r__,

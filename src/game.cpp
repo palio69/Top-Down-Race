@@ -274,6 +274,7 @@ void game::play() {
 
   map.init();
   cam.init();
+  event_system::init();
   time_system::init();
 
   ECS::register_component<movement>();
@@ -304,21 +305,11 @@ void game::play() {
 
 
 
-  bool running = true;
-  SDL_Event evn;
-
-  while (running) {
+  while (event_system::running()) {
 
     time_system::work();
-
-    while(SDL_PollEvent(&evn)) {
-
-      if (evn.type == SDL_QUIT)
-	running = false;
-
-    }
-
-    const Uint8* key = SDL_GetKeyboardState(nullptr);
+    event_system::work();
+    const Uint8* key = event_system::key();
     update(key);
 
     texture_system::work();
