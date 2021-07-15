@@ -4,22 +4,23 @@
 
 void car::update() {
   const float friction = 1.05f;
-  const double angle_modifier = 180.0f * time_system::delta_time();
-
-  this->update_data(angle_modifier);
+  this->update_data();
   this->update_physics(friction);
   this->update_sprite();
 
 }
 
-void car::update_data(const double angle_modifier) {
+void car::update_data() {
   auto data = *(ECS::component<movement>(this->ent));
   auto& goal_speed = data.goal_speed;
   auto& booster = data.booster;
   auto& angle = data.angle;
   const auto max_speed = data.max_speed;
+  const auto turn_speed = data.turn_speed;
 
   const Uint8* key = event_system::key();
+  const auto delta_time = time_system::delta_time();
+
   const bool up = key[SDL_SCANCODE_UP],
     down = key[SDL_SCANCODE_DOWN],
     left = key[SDL_SCANCODE_LEFT],
@@ -49,10 +50,10 @@ void car::update_data(const double angle_modifier) {
     goal_speed = 0.0f;
 
   if (left)
-    angle -= angle_modifier;
+    angle -= turn_speed * delta_time;
 
   if (right)
-    angle += angle_modifier;
+    angle += turn_speed * delta_time;
 
   if (z)
     this->pos = this->origin;
@@ -69,18 +70,20 @@ void car::update_physics(const float friction) {
   const auto booster = data.booster;
   const auto angle = data.angle;
 
+  const auto delta_time = time_system::delta_time();
+
   auto to_radians = [] (const double angle) {
     const double pi = 3.141592654;
     return angle * pi / 180;
   };
 
-  const float final_acceleration = acceleration * time_system::delta_time() * friction * booster,
-    final_deceleration = deceleration * time_system::delta_time() * friction * booster,
+  const float final_acceleration = acceleration * delta_time * friction * booster,
+    final_deceleration = deceleration * delta_time * friction * booster,
 
     x_side = std::sin(to_radians(angle)),
     y_side = std::cos(to_radians(angle));
   const vec2f sides = { x_side, -y_side };
-  vec2f final_pos = sides * time_system::delta_time();
+  vec2f final_pos = sides * delta_time;
 
 
 

@@ -145,8 +145,10 @@ struct { // player
     acceleration = 250.0f,
     deceleration = acceleration * 2.0f,
     booster = 1.0f;
-  const double angle = 0.0;
+  const double angle = 0.0,
+    turn_speed = 180.0f;
 
+  mutable ECS::entity ent = 0;
   const movement move = {
     speed,
     goal_speed,
@@ -156,7 +158,8 @@ struct { // player
     deceleration,
     booster,
 
-    angle
+    angle,
+    turn_speed
   };
 
 } const player;
@@ -293,8 +296,8 @@ void game::play() {
 
   ECS::register_component<movement>();
 
-  const ECS::entity player_ent = ECS::add_entity();
-  ECS::component(player_ent, player.move);
+  player.ent = ECS::add_entity();
+  ECS::component(player.ent, player.move);
 
   tile_map tm(map.first_row, map.tw, map.th);
   tm.add_to_map(map.tiles);
@@ -305,7 +308,7 @@ void game::play() {
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(
-	   player.origin, player_ent,
+	   player.origin, player.ent,
 	   cam1,
 	   { player.src, player.des }
 	   );

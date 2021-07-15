@@ -17,7 +17,8 @@ struct movement {
     deceleration,
     booster;
 
-  double angle = 0.0;
+  double angle,
+    turn_speed;
 };
 
 class car {
@@ -28,7 +29,7 @@ private:
   camera& cam;
   picture sprite;
 
-  void update_data(const double angle_modifier);
+  void update_data();
   void update_physics(const float friction);
   void update_sprite();
 
