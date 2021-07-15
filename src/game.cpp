@@ -139,11 +139,25 @@ struct { // player
   const vec2f wh = { fw, fh },
 
     origin = win.wh / 2.0f - wh / 2.0f;
-  const float max_speed = 1250.0f,
+  const float speed = 0.0f,
+    goal_speed = 0.0f,
+    max_speed = 1250.0f,
     acceleration = 250.0f,
-    deceleration = acceleration * 2.0f;
+    deceleration = acceleration * 2.0f,
+    booster = 1.0f;
   const double angle = 0.0;
-  const movement move = { max_speed, acceleration, deceleration, angle };
+
+  const movement move = {
+    speed,
+    goal_speed,
+    max_speed,
+
+    acceleration,
+    deceleration,
+    booster,
+
+    angle
+  };
 
 } const player;
 

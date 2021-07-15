@@ -14,8 +14,10 @@ void car::update(const Uint8* key) {
 
 void car::update_data(const Uint8* key, const double angle_modifier) {
   auto data = *(ECS::component<movement>(this->ent));
-  const auto max_speed = data.max_speed;
+  auto goal_speed = data.goal_speed;
+  auto booster = data.booster;
   auto angle = data.angle;
+  const auto max_speed = data.max_speed;
 
   const bool up = key[SDL_SCANCODE_UP],
     down = key[SDL_SCANCODE_DOWN],
@@ -30,20 +32,20 @@ void car::update_data(const Uint8* key, const double angle_modifier) {
 
 
   if (n)
-    this->booster = 1.75f;
+    booster = 1.75f;
 
   else
-    this->booster = 1.0f;
+    booster = 1.0f;
 
   if (up_xor_down) {
     if (up)
-      this->goal_speed = max_speed * this->booster;
+      goal_speed = max_speed * booster;
 
     if (down)
-      this->goal_speed = max_speed / -4.0f;
+      goal_speed = max_speed / -4.0f;
 
   } else
-    this->goal_speed = 0.0f;
+    goal_speed = 0.0f;
 
   if (left)
     angle -= angle_modifier;
@@ -54,14 +56,19 @@ void car::update_data(const Uint8* key, const double angle_modifier) {
   if (z)
     this->pos = this->origin;
 
+  data.goal_speed = goal_speed;
+  data.booster = booster;
   data.angle = angle;
   ECS::component<movement>(this->ent, data);
 }
 
 void car::update_physics(const float friction) {
   auto data = *(ECS::component<movement>(this->ent));
+  auto speed = data.speed;
+  const auto goal_speed = data.goal_speed;
   const auto acceleration = data.acceleration;
   const auto deceleration = data.deceleration;
+  const auto booster = data.booster;
   const auto angle = data.angle;
 
   auto to_radians = [] (const double angle) {
@@ -69,8 +76,8 @@ void car::update_physics(const float friction) {
     return angle * pi / 180;
   };
 
-  const float final_acceleration = acceleration * time_system::delta_time() * friction * this->booster,
-    final_deceleration = deceleration * time_system::delta_time() * friction * this->booster,
+  const float final_acceleration = acceleration * time_system::delta_time() * friction * booster,
+    final_deceleration = deceleration * time_system::delta_time() * friction * booster,
 
     x_side = std::sin(to_radians(angle)),
     y_side = std::cos(to_radians(angle));
@@ -79,19 +86,21 @@ void car::update_physics(const float friction) {
 
 
 
-  if (this->speed < this->goal_speed)
-    this->speed += final_acceleration;
+  if (speed < goal_speed)
+    speed += final_acceleration;
 
-  if (this->speed > this->goal_speed)
-    this->speed -= final_deceleration;
+  if (speed > goal_speed)
+    speed -= final_deceleration;
 
 
 
-  final_pos *= this->speed;
+  final_pos *= speed;
   this->pos += final_pos;
 
   this->cam.update(this->pos);
 
+  data.speed = speed;
+  ECS::component<movement>(this->ent, data);
 }
 
 void car::update_sprite() {

@@ -9,9 +9,14 @@
 #include <map.hpp>
 
 struct movement {
-  float max_speed,
+  float speed,
+    goal_speed,
+    max_speed,
+
     acceleration,
-    deceleration;
+    deceleration,
+    booster;
+
   double angle = 0.0;
 };
 
@@ -19,11 +24,7 @@ class car {
 private:
   const vec2f origin;
   vec2f pos;
-  float speed,
-    goal_speed,
-    booster;
   const ECS::entity ent;
-
   camera& cam;
   picture sprite;
 
@@ -35,15 +36,11 @@ public:
   car(
       const vec2f origin,
       const ECS::entity ent,
-
       camera& cam,
       const picture sprite
       ) :
     origin(origin), pos(origin),
-    speed(0.0f), goal_speed(0.0f),
-    booster(1.0f),
     ent(ent),
-
     cam(cam),
     sprite(sprite) { }
   ~car() { }
