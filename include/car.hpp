@@ -28,7 +28,7 @@ private:
   camera& cam;
   picture sprite;
 
-  void update_data(const Uint8* key, const double angle_modifier);
+  void update_data(const double angle_modifier);
   void update_physics(const float friction);
   void update_sprite();
 
@@ -45,6 +45,6 @@ public:
     sprite(sprite) { }
   ~car() { }
 
-  void update(const Uint8* key);
+  void update();
 
 };

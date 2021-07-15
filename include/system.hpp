@@ -20,11 +20,12 @@ private:
   ~event_system() { }
 
   static bool running__;
+  static Uint8* key__;
   static SDL_Event event__;
 
 public:
   static bool running() { return running__; }
-  static const Uint8* key() { return SDL_GetKeyboardState(nullptr); }
+  static const Uint8* key() { return key__; }
 
   static void init();
   static void work();

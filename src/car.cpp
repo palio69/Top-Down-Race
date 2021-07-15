@@ -2,23 +2,24 @@
 
 
 
-void car::update(const Uint8* key) {
+void car::update() {
   const float friction = 1.05f;
   const double angle_modifier = 180.0f * time_system::delta_time();
 
-  this->update_data(key, angle_modifier);
+  this->update_data(angle_modifier);
   this->update_physics(friction);
   this->update_sprite();
 
 }
 
-void car::update_data(const Uint8* key, const double angle_modifier) {
+void car::update_data(const double angle_modifier) {
   auto data = *(ECS::component<movement>(this->ent));
-  auto goal_speed = data.goal_speed;
-  auto booster = data.booster;
-  auto angle = data.angle;
+  auto& goal_speed = data.goal_speed;
+  auto& booster = data.booster;
+  auto& angle = data.angle;
   const auto max_speed = data.max_speed;
 
+  const Uint8* key = event_system::key();
   const bool up = key[SDL_SCANCODE_UP],
     down = key[SDL_SCANCODE_DOWN],
     left = key[SDL_SCANCODE_LEFT],
@@ -56,15 +57,12 @@ void car::update_data(const Uint8* key, const double angle_modifier) {
   if (z)
     this->pos = this->origin;
 
-  data.goal_speed = goal_speed;
-  data.booster = booster;
-  data.angle = angle;
   ECS::component<movement>(this->ent, data);
 }
 
 void car::update_physics(const float friction) {
   auto data = *(ECS::component<movement>(this->ent));
-  auto speed = data.speed;
+  auto& speed = data.speed;
   const auto goal_speed = data.goal_speed;
   const auto acceleration = data.acceleration;
   const auto deceleration = data.deceleration;
@@ -99,7 +97,6 @@ void car::update_physics(const float friction) {
 
   this->cam.update(this->pos);
 
-  data.speed = speed;
   ECS::component<movement>(this->ent, data);
 }
 

@@ -3,9 +3,11 @@
 
 
 bool event_system::running__;
+Uint8* event_system::key__;
 SDL_Event event_system::event__;
 
 void event_system::init() {
+  key__ = 0;
   running__ = true;
 }
 
@@ -17,6 +19,8 @@ void event_system::work() {
       running__ = false;
 
   }
+
+  key__ = const_cast<Uint8*>(SDL_GetKeyboardState(nullptr));
 
 }
 

@@ -312,8 +312,8 @@ void game::play() {
 
 
 
-  auto update = [&car1, &tm, &cam1] (const Uint8* key) {
-    car1.update(key);
+  auto update = [&car1, &tm, &cam1] () {
+    car1.update();
     tm.update(cam1);
   };
 
@@ -323,8 +323,8 @@ void game::play() {
 
     time_system::work();
     event_system::work();
-    const Uint8* key = event_system::key();
-    update(key);
+
+    update();
 
     texture_system::work();
     render_system::work();
