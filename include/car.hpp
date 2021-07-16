@@ -8,6 +8,19 @@
 #include <camera.hpp>
 #include <map.hpp>
 
+struct position {
+  const vec2f origin;
+  vec2f pos;
+  double angle;
+
+  constexpr position& operator =(const position obj) {
+    this->pos = obj.pos;
+    this->angle = obj.angle;
+    return *this;
+  }
+
+};
+
 struct movement {
   float speed,
     goal_speed,
@@ -17,14 +30,11 @@ struct movement {
     deceleration,
     booster;
 
-  double angle,
-    turn_speed;
+  double turn_speed;
 };
 
 class car {
 private:
-  const vec2f origin;
-  vec2f pos;
   const ECS::entity ent;
   camera& cam;
   picture sprite;
@@ -34,16 +44,8 @@ private:
   void update_sprite();
 
 public:
-  car(
-      const vec2f origin,
-      const ECS::entity ent,
-      camera& cam,
-      const picture sprite
-      ) :
-    origin(origin), pos(origin),
-    ent(ent),
-    cam(cam),
-    sprite(sprite) { }
+  car(const ECS::entity ent, camera& cam, const picture sprite) :
+    ent(ent), cam(cam), sprite(sprite) { }
   ~car() { }
 
   void update();

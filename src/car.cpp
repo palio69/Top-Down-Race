@@ -11,12 +11,16 @@ void car::update() {
 }
 
 void car::update_data() {
-  auto data = *(ECS::component<movement>(this->ent));
-  auto& goal_speed = data.goal_speed;
-  auto& booster = data.booster;
-  auto& angle = data.angle;
-  const auto max_speed = data.max_speed;
-  const auto turn_speed = data.turn_speed;
+  auto pstn = *(ECS::component<position>(this->ent));
+  auto move = *(ECS::component<movement>(this->ent));
+
+  auto& pos = pstn.pos;
+  auto& angle = pstn.angle;
+  auto& goal_speed = move.goal_speed;
+  auto& booster = move.booster;
+  const auto origin = pstn.origin;
+  const auto max_speed = move.max_speed;
+  const auto turn_speed = move.turn_speed;
 
   const Uint8* key = event_system::key();
   const auto delta_time = time_system::delta_time();
@@ -56,19 +60,23 @@ void car::update_data() {
     angle += turn_speed * delta_time;
 
   if (z)
-    this->pos = this->origin;
+    pos = origin;
 
-  ECS::component<movement>(this->ent, data);
+  ECS::component(this->ent, pstn);
+  ECS::component(this->ent, move);
 }
 
 void car::update_physics(const float friction) {
-  auto data = *(ECS::component<movement>(this->ent));
-  auto& speed = data.speed;
-  const auto goal_speed = data.goal_speed;
-  const auto acceleration = data.acceleration;
-  const auto deceleration = data.deceleration;
-  const auto booster = data.booster;
-  const auto angle = data.angle;
+  auto pstn = *(ECS::component<position>(this->ent));
+  auto move = *(ECS::component<movement>(this->ent));
+
+  auto& pos = pstn.pos;
+  auto& speed = move.speed;
+  const auto angle = pstn.angle;
+  const auto goal_speed = move.goal_speed;
+  const auto acceleration = move.acceleration;
+  const auto deceleration = move.deceleration;
+  const auto booster = move.booster;
 
   const auto delta_time = time_system::delta_time();
 
@@ -96,19 +104,21 @@ void car::update_physics(const float friction) {
 
 
   final_pos *= speed;
-  this->pos += final_pos;
+  pos += final_pos;
 
-  this->cam.update(this->pos);
+  this->cam.update(pos);
 
-  ECS::component<movement>(this->ent, data);
+  ECS::component(this->ent, pstn);
+  ECS::component(this->ent, move);
 }
 
 void car::update_sprite() {
-  auto data = *(ECS::component<movement>(this->ent));
-  const auto angle = data.angle;
+  auto pstn = *(ECS::component<position>(this->ent));
+  const auto pos = pstn.pos;
+  const auto angle = pstn.angle;
 
-  this->sprite.des.x = this->pos.x - this->cam.get_camera_pos().x;
-  this->sprite.des.y = this->pos.y - this->cam.get_camera_pos().y;
+  this->sprite.des.x = pos.x - this->cam.get_camera_pos().x;
+  this->sprite.des.y = pos.y - this->cam.get_camera_pos().y;
   this->sprite.angle = angle;
   texture_system::add_texture(this->sprite);
 }

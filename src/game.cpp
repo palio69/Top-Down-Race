@@ -138,7 +138,8 @@ struct { // player
     fh = h;
   const vec2f wh = { fw, fh },
 
-    origin = win.wh / 2.0f - wh / 2.0f;
+    origin = win.wh / 2.0f - wh / 2.0f,
+    pos = origin;
   const float speed = 0.0f,
     goal_speed = 0.0f,
     max_speed = 1250.0f,
@@ -149,6 +150,7 @@ struct { // player
     turn_speed = 180.0f;
 
   mutable ECS::entity ent = 0;
+  const position pstn = { origin, pos, angle };
   const movement move = {
     speed,
     goal_speed,
@@ -158,7 +160,6 @@ struct { // player
     deceleration,
     booster,
 
-    angle,
     turn_speed
   };
 
@@ -294,9 +295,11 @@ void game::play() {
   event_system::init();
   time_system::init();
 
+  ECS::register_component<position>();
   ECS::register_component<movement>();
 
   player.ent = ECS::add_entity();
+  ECS::component(player.ent, player.pstn);
   ECS::component(player.ent, player.move);
 
   tile_map tm(map.first_row, map.tw, map.th);
@@ -307,11 +310,7 @@ void game::play() {
   tm.add_tile(map.tile2);
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
-  car car1(
-	   player.origin, player.ent,
-	   cam1,
-	   { player.src, player.des }
-	   );
+  car car1(player.ent, cam1, { player.src, player.des } );
 
 
 
