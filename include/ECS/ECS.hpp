@@ -287,6 +287,16 @@ public:
     entity_manager::bits(ent, ent_bits);
   }
 
-#include <ECS/subsystem.hpp>
-
 };
+
+#ifdef __INTERN__
+
+unsigned ECS::entity_manager::index__ = 0;
+std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__ { };
+std::vector<ECS::function> ECS::entity_manager::observers__ { };
+
+ECS::component_id ECS::component_manager::current_id__ = 0;
+std::map<const char*, ECS::component_id> ECS::component_manager::ids__ { };
+std::map<ECS::component_id, std::shared_ptr<ECS::base_component_container>> ECS::component_manager::containers__ { };
+
+#endif

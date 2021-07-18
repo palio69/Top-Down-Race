@@ -1,3 +1,4 @@
+#define __INTERN__
 #include <system.hpp>
 
 
@@ -125,13 +126,3 @@ void time_system::work() {
   delta_time__ = next_time__ - current_time__;
   current_time__ = next_time__;
 }
-
-
-
-unsigned ECS::entity_manager::index__ = 0;
-std::map<ECS::entity, ECS::component_bits> ECS::entity_manager::entities__ { };
-std::vector<ECS::function> ECS::entity_manager::observers__ { };
-
-ECS::component_id ECS::component_manager::current_id__ = 0;
-std::map<const char*, ECS::component_id> ECS::component_manager::ids__ { };
-std::map<ECS::component_id, std::shared_ptr<ECS::base_component_container>> ECS::component_manager::containers__ { };

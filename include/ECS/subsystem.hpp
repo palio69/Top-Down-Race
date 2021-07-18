@@ -38,3 +38,14 @@ public:
 }; // NAME
 
 */
+
+
+
+// subsystems definitions
+
+#ifdef __INTERN__
+
+// std::set<ECS::entity> NAME::entities;
+// ECS::component_bits NAME::subsystem_bits;
+
+#endif
