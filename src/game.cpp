@@ -188,89 +188,94 @@ struct { // cam
 
 
 
-void game::init() {
-  auto init_dependencies = [] {
-    std::cout << "--- initializing dependencies...\n";
+bool game::init_dependencies() {
+  std::cout << "--- initializing dependencies...\n";
 
-    const bool SDL_init = SDL_Init(init_flags.SDL),
+  const bool SDL_init = SDL_Init(init_flags.SDL),
     IMG_init = IMG_Init(init_flags.IMG) != init_flags.IMG;
 
-    bool initialized = true;
+  bool initialized = true;
 
 
 
-    if (SDL_init) {
-      std::cout << "ERROR: could not initialize SDL library\n";
-      initialized = false;
-    } else
-      std::cout << "initialized SDL successfully!\n";
+  if (SDL_init) {
+    std::cout << "Failed to initialize SDL library\n";
+    initialized = false;
+  } else
+    std::cout << "Initialized SDL successfully!\n";
 
-    if (IMG_init) {
-      std::cout << "ERROR: could not initialize SDL_image library\n";
-      initialized = false;
-    } else
-      std::cout << "initialized SDL_image successfully!\n";
-
-
-
-    if (initialized)
-      std::cout << "--- initialized dependecies successfully!\n\n" << std::endl;
-
-    return initialized;
-
-  };
-
-  auto init_objs = [] {
-    std::cout << "--- initializing essential variables and objects...\n";
-
-    render_system::init(
-			win.title, win.x, win.y, win.w, win.h, win.flags,
-			ren.index, ren.flags,
-			ren.r, ren.g, ren.b, ren.a
-			);
-    texture_system::init();
-
-    bool initialized = true;
+  if (IMG_init) {
+    std::cout << "Failed to initialize SDL_image library\n";
+    initialized = false;
+  } else
+    std::cout << "Initialized SDL_image successfully!\n";
 
 
 
-    if (!render_system::window()) {
-      std::cout << "failed to initialize window\n";
-      initialized = false;
-    } else
-      std::cout << "initialized window successfully!\n";
+  if (initialized)
+    std::cout << "--- Initialized dependecies successfully!\n\n" << std::endl;
 
-    if (!render_system::renderer()) {
-      std::cout << "failed to initialize renderer\n";
-      initialized = false;
-    } else
-      std::cout << "initialized renderer successfully!\n";
+  return initialized;
+}
 
-    if (!texture_system::main_textures()) {
-      std::cout << "failed to load textures\n";
-      initialized = false;
-    } else
-      std::cout << "loaded textures successfully!\n";
+bool game::init_objs() {
+  std::cout << "--- Initializing essential objects...\n";
 
+  render_system::init(
+		      win.title, win.x, win.y, win.w, win.h, win.flags,
+		      ren.index, ren.flags,
+		      ren.r, ren.g, ren.b, ren.a
+		      );
+  texture_system::init();
 
+  map.init();
+  cam.init();
 
-    if (initialized)
-      std::cout << "--- initialized essential variables and objects successfully!\n\n" << std::endl;
-
-    return initialized;
-
-  };
+  bool initialized = true;
 
 
 
+  if (!render_system::window()) {
+    std::cout << "Failed to initialize window\n";
+    initialized = false;
+  } else
+    std::cout << "Initialized window successfully!\n";
+
+  if (!render_system::renderer()) {
+    std::cout << "Failed to initialize renderer\n";
+    initialized = false;
+  } else
+    std::cout << "Initialized renderer successfully!\n";
+
+  if (!texture_system::main_textures()) {
+    std::cout << "Failed to load textures\n";
+    initialized = false;
+  } else
+    std::cout << "Loaded textures successfully!\n";
+
+
+
+  if (initialized)
+    std::cout << "--- Initialized essential objects successfully!\n\n" << std::endl;
+
+  return initialized;
+}
+
+void game::init_systems() {
+  event_system::init();
+  time_system::init();
+}
+
+void game::init() {
   std::cout << "-------| Top Down Race |-------\n\n" << std::endl;
 
   if (!init_dependencies())
-    throw "--- failed to initialize dependecies";
+    throw "--- Failed to initialize dependecies";
 
   if (!init_objs())
-    throw "--- failed to initialize essential variables and objects";
+    throw "--- Failed to initialize essential objects";
 
+  init_systems();
 }
 
 void game::play() {
@@ -281,7 +286,7 @@ void game::play() {
     return;
 
   } catch(...) {
-    std::cout << "an unknown error occured" << std::endl;
+    std::cout << "ERROR: An unknown error occured" << std::endl;
     return;
 
   }
@@ -289,11 +294,6 @@ void game::play() {
 
 
   std::cout << "< BEGIN >\n" << std::endl;
-
-  map.init();
-  cam.init();
-  event_system::init();
-  time_system::init();
 
   ECS::register_component<position>();
   ECS::register_component<movement>();

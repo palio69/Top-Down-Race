@@ -10,6 +10,10 @@
 
 class game {
 private:
+  static bool init_dependencies();
+  static bool init_objs();
+  static void init_systems();
+
   static void init();
 
 public:
