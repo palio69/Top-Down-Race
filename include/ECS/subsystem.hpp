@@ -28,7 +28,7 @@ private:
 public:
   static void init(const ECS::component_bits bits) {
     subsystem_bits = bits;
-    ECS::add_bits_observer(observer); 
+    ECS::add_bits_observer(observer);
   }
 
   static void work() {
