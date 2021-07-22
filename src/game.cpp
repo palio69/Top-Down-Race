@@ -133,6 +133,8 @@ struct { // player
     h = 64;
   const SDL_Rect src = { 0, 0, 16, 16 },
     des = { win.w / 2 - w / 2, win.h / 2 - h / 2, w, h };
+  const picture spr = { src, des };
+  const int rows = 1, columns = 1;
 
   const float fw = w,
     fh = h;
@@ -150,6 +152,7 @@ struct { // player
     turn_speed = 180.0f;
 
   mutable ECS::entity ent = 0;
+  const sprite sprt = { spr, rows, columns };
   const position pstn = { origin, pos, angle };
   const movement move = {
     speed,
@@ -295,10 +298,12 @@ void game::play() {
 
   std::cout << "< BEGIN >\n" << std::endl;
 
+  ECS::register_component<sprite>();
   ECS::register_component<position>();
   ECS::register_component<movement>();
 
   player.ent = ECS::add_entity();
+  ECS::component(player.ent, player.sprt);
   ECS::component(player.ent, player.pstn);
   ECS::component(player.ent, player.move);
 
@@ -310,7 +315,7 @@ void game::play() {
   tm.add_tile(map.tile2);
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
-  car car1(player.ent, cam1, { player.src, player.des } );
+  car car1(player.ent, cam1, player.spr);
 
 
 

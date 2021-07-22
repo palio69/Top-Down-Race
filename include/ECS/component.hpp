@@ -1,6 +1,15 @@
 #pragma once
 
 #include <vec2f.hpp>
+#include <picture.hpp>
+
+
+
+struct sprite {
+  picture spr;
+  int rows = 0, columns = 0,
+    index = 0;
+};
 
 struct position {
   const vec2f origin;
