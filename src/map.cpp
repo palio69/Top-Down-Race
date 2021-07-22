@@ -60,7 +60,7 @@ void tile_map::update(const camera cam) const {
       des.y = y * des.h - camera_pos.y;
       const picture texture = { t.sprite.src, des };
 
-      texture_system::add_texture(texture);
+      picture_system::add_picture(texture);
 
     }
 

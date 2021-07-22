@@ -72,21 +72,21 @@ public:
 
 };
 
-class texture_system {
+class picture_system {
 private:
-  texture_system() { }
-  ~texture_system() { }
+  picture_system() { }
+  ~picture_system() { }
 
   static std::string path__;
-  static SDL_Texture* main_textures__;
+  static SDL_Texture* main_pictures__;
 
-  static std::stack<picture> render_textures__;
+  static std::stack<picture> render_pictures__;
 
 public:
-  static SDL_Texture* main_textures() { return main_textures__; }
+  static SDL_Texture* main_pictures() { return main_pictures__; }
 
-  static void add_texture(const picture texture) { render_textures__.push(texture); }
-  static void quit() { SDL_DestroyTexture(main_textures__); }
+  static void add_picture(const picture pic) { render_pictures__.push(pic); }
+  static void quit() { SDL_DestroyTexture(main_pictures__); }
 
   static void init();
   static void work();

@@ -42,7 +42,7 @@ void render_system::clear() {
 
 void render_system::render(const picture& pic) {
   SDL_RenderCopyEx(
-		   renderer__, texture_system::main_textures(),
+		   renderer__, picture_system::main_pictures(),
 		   &(pic.src), &(pic.des),
 		   pic.angle, pic.center, pic.flip
 		   );
@@ -88,22 +88,22 @@ void render_system::work() {
 
 
 
-std::string texture_system::path__;
-SDL_Texture* texture_system::main_textures__;
-std::stack<picture> texture_system::render_textures__;
+std::string picture_system::path__;
+SDL_Texture* picture_system::main_pictures__;
+std::stack<picture> picture_system::render_pictures__;
 
-void texture_system::init() {
+void picture_system::init() {
   path__ = "assets/Top Down Race Sprites.png";
-  main_textures__ = IMG_LoadTexture(render_system::renderer(), path__.data());
+  main_pictures__ = IMG_LoadTexture(render_system::renderer(), path__.data());
 }
 
-void texture_system::work() {
+void picture_system::work() {
 
-  while (!(render_textures__.empty())) {
+  while (!(render_pictures__.empty())) {
 
-    const auto& texture = render_textures__.top();
-    render_system::add_to_queue(texture);
-    render_textures__.pop();
+    const auto& pic = render_pictures__.top();
+    render_system::add_to_queue(pic);
+    render_pictures__.pop();
 
   }
 

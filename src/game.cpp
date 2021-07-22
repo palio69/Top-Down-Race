@@ -226,7 +226,7 @@ bool game::init_objs() {
 		      ren.index, ren.flags,
 		      ren.r, ren.g, ren.b, ren.a
 		      );
-  texture_system::init();
+  picture_system::init();
 
   map.init();
   cam.init();
@@ -247,7 +247,7 @@ bool game::init_objs() {
   } else
     std::cout << "Initialized renderer successfully!\n";
 
-  if (!texture_system::main_textures()) {
+  if (!picture_system::main_pictures()) {
     std::cout << "Failed to load textures\n";
     initialized = false;
   } else
@@ -328,7 +328,7 @@ void game::play() {
 
     update();
 
-    texture_system::work();
+    picture_system::work();
     render_system::work();
 
   }
@@ -337,7 +337,7 @@ void game::play() {
 
   std::cout << "\n< EXIT >" << std::endl;
 
-  texture_system::quit();
+  picture_system::quit();
   render_system::quit();
 
   IMG_Quit();
