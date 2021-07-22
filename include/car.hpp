@@ -12,15 +12,13 @@ class car {
 private:
   const ECS::entity ent;
   camera& cam;
-  picture sprite;
 
   void update_data();
   void update_physics(const float friction);
   void update_sprite();
 
 public:
-  car(const ECS::entity ent, camera& cam, const picture sprite) :
-    ent(ent), cam(cam), sprite(sprite) { }
+  car(const ECS::entity ent, camera& cam) : ent(ent), cam(cam) { }
   ~car() { }
 
   void update();

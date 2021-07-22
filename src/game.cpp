@@ -315,7 +315,7 @@ void game::play() {
   tm.add_tile(map.tile2);
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
-  car car1(player.ent, cam1, player.spr);
+  car car1(player.ent, cam1);
 
 
 

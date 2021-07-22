@@ -113,12 +113,16 @@ void car::update_physics(const float friction) {
 }
 
 void car::update_sprite() {
+  auto sprt = *(ECS::component<sprite>(this->ent));
   auto pstn = *(ECS::component<position>(this->ent));
+  auto& spr = sprt.spr;
   const auto pos = pstn.pos;
   const auto angle = pstn.angle;
 
-  this->sprite.des.x = pos.x - this->cam.get_camera_pos().x;
-  this->sprite.des.y = pos.y - this->cam.get_camera_pos().y;
-  this->sprite.angle = angle;
-  picture_system::add_picture(this->sprite);
+  spr.des.x = pos.x - this->cam.get_camera_pos().x;
+  spr.des.y = pos.y - this->cam.get_camera_pos().y;
+  spr.angle = angle;
+  picture_system::add_picture(spr);
+
+  ECS::component(this->ent, sprt);
 }
