@@ -189,7 +189,7 @@ struct { // cam
 
 
 bool game::init_dependencies() {
-  std::cout << "--- initializing dependencies...\n";
+  std::cout << "--- Initializing dependencies...\n";
 
   const bool SDL_init = SDL_Init(init_flags.SDL),
     IMG_init = IMG_Init(init_flags.IMG) != init_flags.IMG;
