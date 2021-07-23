@@ -30,10 +30,6 @@ void tile_map::add_to_map(const std::string tiles) {
   this->h += tiles.size() / this->w;
 }
 
-void tile_map::add_tile(const tile new_tile) {
-  this->tiles.push_back(new_tile);
-}
-
 void tile_map::update(const camera cam) const {
   const vec2f camera_pos = cam.get_camera_pos(),
     window_wh = cam.get_window_wh(),
