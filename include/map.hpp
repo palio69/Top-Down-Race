@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
+#include <vec2f.hpp>
 #include <system.hpp>
 #include <camera.hpp>
 #include <picture.hpp>
@@ -22,6 +23,7 @@ private:
   const int tw, th;
 
   int find_tile(const char id) const;
+  vec2f find_tile_xy(const char id) const;
 
 public:
   tile_map(
