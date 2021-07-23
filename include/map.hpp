@@ -37,7 +37,7 @@ public:
   ~tile_map() { }
 
   void add_to_map(const std::string tiles);
-  void add_tile(const tile new_tile);
+  void add_tile(const tile new_tile) { this->tiles.push_back(new_tile); }
 
   void update(const camera cam) const;
 
