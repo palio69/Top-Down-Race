@@ -14,7 +14,7 @@ int tile_map::find_tile(const char id) const {
 
 }
 
-vec2f find_tile_xy(const char id) const {
+vec2f tile_map::find_tile_xy(const char id) const {
   const int i = this->find_tile(id);
   if (i < 0)
     return { -1.0f, -1.0f };
