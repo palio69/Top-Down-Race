@@ -21,7 +21,9 @@ vec2f tile_map::find_tile_xy(const char id) const {
 
   const int y = i / this->w,
     x = i - y * this->w;
-  const vec2f tile_xy = { x, y };
+  const float fx = x, fy = y;
+  const vec2f tile_xy = { fx, fy };
+
   return tile_xy;
 }
 
