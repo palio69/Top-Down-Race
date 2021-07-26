@@ -4,16 +4,16 @@
 
 void car::update() {
   const float friction = 1.05f;
+  auto sprt = *(ECS::component<sprite>(this->ent));
   auto pstn = *(ECS::component<position>(this->ent));
   auto move = *(ECS::component<movement>(this->ent));
-  auto sprt = *(ECS::component<sprite>(this->ent));
 
+  auto& spr = sprt.spr;
   auto& pos = pstn.pos;
   auto& angle = pstn.angle;
   auto& speed = move.speed;
   auto& goal_speed = move.goal_speed;
   auto& booster = move.booster;
-  auto& spr = sprt.spr;
   const auto origin = pstn.origin;
   const auto max_speed = move.max_speed;
   const auto acceleration = move.acceleration;
@@ -95,7 +95,7 @@ void car::update() {
 
 
 
+  ECS::component(this->ent, sprt);
   ECS::component(this->ent, pstn);
   ECS::component(this->ent, move);
-  ECS::component(this->ent, sprt);
 }
