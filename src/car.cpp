@@ -4,22 +4,20 @@
 
 void car::update() {
   const float friction = 1.05f;
-  this->update_data();
-  this->update_physics(friction);
-  this->update_sprite();
-
-}
-
-void car::update_data() {
   auto pstn = *(ECS::component<position>(this->ent));
   auto move = *(ECS::component<movement>(this->ent));
+  auto sprt = *(ECS::component<sprite>(this->ent));
 
   auto& pos = pstn.pos;
   auto& angle = pstn.angle;
+  auto& speed = move.speed;
   auto& goal_speed = move.goal_speed;
   auto& booster = move.booster;
+  auto& spr = sprt.spr;
   const auto origin = pstn.origin;
   const auto max_speed = move.max_speed;
+  const auto acceleration = move.acceleration;
+  const auto deceleration = move.deceleration;
   const auto turn_speed = move.turn_speed;
 
   const Uint8* key = event_system::key();
@@ -34,6 +32,19 @@ void car::update_data() {
     z = key[SDL_SCANCODE_Z],
 
     up_xor_down = ((up || down) && !(up && down));
+
+  auto to_radians = [] (const double angle) {
+    const double pi = 3.141592654;
+    return angle * pi / 180;
+  };
+
+  const float final_acceleration = acceleration * delta_time * friction * booster,
+    final_deceleration = deceleration * delta_time * friction * booster,
+
+    x_side = std::sin(to_radians(angle)),
+    y_side = std::cos(to_radians(angle));
+  const vec2f sides = { x_side, -y_side };
+  vec2f final_pos = sides * delta_time;
 
 
 
@@ -62,37 +73,6 @@ void car::update_data() {
   if (z)
     pos = origin;
 
-  ECS::component(this->ent, pstn);
-  ECS::component(this->ent, move);
-}
-
-void car::update_physics(const float friction) {
-  auto pstn = *(ECS::component<position>(this->ent));
-  auto move = *(ECS::component<movement>(this->ent));
-
-  auto& pos = pstn.pos;
-  auto& speed = move.speed;
-  const auto angle = pstn.angle;
-  const auto goal_speed = move.goal_speed;
-  const auto acceleration = move.acceleration;
-  const auto deceleration = move.deceleration;
-  const auto booster = move.booster;
-
-  const auto delta_time = time_system::delta_time();
-
-  auto to_radians = [] (const double angle) {
-    const double pi = 3.141592654;
-    return angle * pi / 180;
-  };
-
-  const float final_acceleration = acceleration * delta_time * friction * booster,
-    final_deceleration = deceleration * delta_time * friction * booster,
-
-    x_side = std::sin(to_radians(angle)),
-    y_side = std::cos(to_radians(angle));
-  const vec2f sides = { x_side, -y_side };
-  vec2f final_pos = sides * delta_time;
-
 
 
   if (speed < goal_speed)
@@ -101,28 +81,21 @@ void car::update_physics(const float friction) {
   if (speed > goal_speed)
     speed -= final_deceleration;
 
-
-
   final_pos *= speed;
   pos += final_pos;
 
   this->cam.update(pos);
 
-  ECS::component(this->ent, pstn);
-  ECS::component(this->ent, move);
-}
 
-void car::update_sprite() {
-  auto sprt = *(ECS::component<sprite>(this->ent));
-  auto pstn = *(ECS::component<position>(this->ent));
-  auto& spr = sprt.spr;
-  const auto pos = pstn.pos;
-  const auto angle = pstn.angle;
 
   spr.des.x = pos.x - this->cam.get_camera_pos().x;
   spr.des.y = pos.y - this->cam.get_camera_pos().y;
   spr.angle = angle;
   picture_system::add_picture(spr);
 
+
+
+  ECS::component(this->ent, pstn);
+  ECS::component(this->ent, move);
   ECS::component(this->ent, sprt);
 }

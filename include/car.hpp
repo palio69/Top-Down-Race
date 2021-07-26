@@ -13,10 +13,6 @@ private:
   const ECS::entity ent;
   camera& cam;
 
-  void update_data();
-  void update_physics(const float friction);
-  void update_sprite();
-
 public:
   car(const ECS::entity ent, camera& cam) : ent(ent), cam(cam) { }
   ~car() { }
