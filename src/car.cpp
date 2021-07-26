@@ -4,6 +4,7 @@
 
 void car::update() {
   const float friction = 1.05f;
+  auto keys = *(ECS::component<input_keys>(this->ent));
   auto sprt = *(ECS::component<sprite>(this->ent));
   auto pstn = *(ECS::component<position>(this->ent));
   auto move = *(ECS::component<movement>(this->ent));
@@ -14,6 +15,12 @@ void car::update() {
   auto& speed = move.speed;
   auto& goal_speed = move.goal_speed;
   auto& booster = move.booster;
+  const auto k_up = keys.up;
+  const auto k_down = keys.down;
+  const auto k_left = keys.left;
+  const auto k_right = keys.right;
+  const auto k_nitro = keys.nitro;
+  const auto k_reset_pos = keys.reset_pos;
   const auto origin = pstn.origin;
   const auto max_speed = move.max_speed;
   const auto acceleration = move.acceleration;
@@ -23,13 +30,13 @@ void car::update() {
   const Uint8* key = event_system::key();
   const auto delta_time = time_system::delta_time();
 
-  const bool up = key[SDL_SCANCODE_UP],
-    down = key[SDL_SCANCODE_DOWN],
-    left = key[SDL_SCANCODE_LEFT],
-    right = key[SDL_SCANCODE_RIGHT],
+  const bool up = key[k_up],
+    down = key[k_down],
+    left = key[k_left],
+    right = key[k_right],
 
-    n = key[SDL_SCANCODE_N],
-    z = key[SDL_SCANCODE_Z],
+    nitro = key[k_nitro],
+    reset_pos = key[k_reset_pos],
 
     up_xor_down = ((up || down) && !(up && down));
 
@@ -48,7 +55,7 @@ void car::update() {
 
 
 
-  if (n)
+  if (nitro)
     booster = 1.75f;
 
   else
@@ -70,7 +77,7 @@ void car::update() {
   if (right)
     angle += turn_speed * delta_time;
 
-  if (z)
+  if (reset_pos)
     pos = origin;
 
 

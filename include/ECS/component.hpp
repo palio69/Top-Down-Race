@@ -12,7 +12,7 @@ struct input_keys {
     left = SDL_SCANCODE_LEFT,
     right = SDL_SCANCODE_RIGHT,
     nitro = SDL_SCANCODE_N,
-    origin = SDL_SCANCODE_Z;
+    reset_pos = SDL_SCANCODE_Z;
 };
 
 struct sprite {
