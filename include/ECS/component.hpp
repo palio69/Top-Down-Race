@@ -1,9 +1,19 @@
 #pragma once
 
+#include <SDL2/SDL.h>
 #include <vec2f.hpp>
 #include <picture.hpp>
 
 
+
+struct input_keys {
+  SDL_Scancode up = SDL_SCANCODE_UP,
+    down = SDL_SCANCODE_DOWN,
+    left = SDL_SCANCODE_LEFT,
+    right = SDL_SCANCODE_RIGHT,
+    nitro = SDL_SCANCODE_N,
+    origin = SDL_SCANCODE_Z;
+};
 
 struct sprite {
   picture spr;

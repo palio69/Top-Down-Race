@@ -152,6 +152,7 @@ struct { // player
     turn_speed = 180.0f;
 
   mutable ECS::entity ent = 0;
+  const input_keys keys;
   const sprite sprt = { spr, rows, columns };
   const position pstn = { origin, pos, angle };
   const movement move = {
@@ -298,11 +299,13 @@ void game::play() {
 
   std::cout << "< BEGIN >\n" << std::endl;
 
+  ECS::register_component<input_keys>();
   ECS::register_component<sprite>();
   ECS::register_component<position>();
   ECS::register_component<movement>();
 
   player.ent = ECS::add_entity();
+  ECS::component(player.ent, player.keys);
   ECS::component(player.ent, player.sprt);
   ECS::component(player.ent, player.pstn);
   ECS::component(player.ent, player.move);
