@@ -174,10 +174,15 @@ struct { // player
 struct { // cam
 
   void init() const {
-    const float x = 0.0f,
-      y = 0.0f,
-      w = map.first_row.size(),
+    const float w = map.first_row.size(),
       h = (map.first_row.size() + map.tiles.size()) / w;
+    float x = player.origin.x - (win.fw / 2 - player.fw / 2),
+      y = player.origin.y - (win.fh / 2 - player.fh / 2);
+
+    if (x < 0.0f)
+      x = 0.0f;
+    if (y < 0.0f)
+      y = 0.0f;
 
     xy_limit = { x, y };
     wh_limit = { w * map.tw, h * map.th };
