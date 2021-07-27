@@ -138,10 +138,10 @@ struct { // player
 
   const float fw = w,
     fh = h;
-  const vec2f wh = { fw, fh },
+  const vec2f wh = { fw, fh };
 
-    origin = win.wh / 2.0f - wh / 2.0f,
-    pos = origin;
+  mutable vec2f origin, pos;
+  const vec2f& ref_origin = origin, ref_pos = pos;
   const float speed = 0.0f,
     goal_speed = 0.0f,
     max_speed = 1250.0f,
@@ -154,7 +154,7 @@ struct { // player
   mutable ECS::entity ent = 0;
   const input_keys keys;
   const sprite sprt = { spr, rows, columns };
-  const position pstn = { origin, pos, angle };
+  const position pstn = { ref_origin, ref_pos, angle };
   const movement move = {
     speed,
     goal_speed,
@@ -237,9 +237,6 @@ bool game::init_objs() {
 		      );
   picture_system::init();
 
-  map.init();
-  cam.init();
-
   bool initialized = true;
 
 
@@ -315,12 +312,21 @@ void game::play() {
   ECS::component(player.ent, player.pstn);
   ECS::component(player.ent, player.move);
 
+  map.init();
+
   tile_map tm(map.first_row, map.tw, map.th);
   tm.add_to_map(map.tiles);
   tm.add_tile(map.origin_tile);
   tm.add_tile(map.finish_tile);
   tm.add_tile(map.tile1);
   tm.add_tile(map.tile2);
+
+  player.origin = tm.find_tile_xy('0');
+  player.pos = player.origin;
+
+  std::cout << player.origin;
+
+  cam.init();
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
   car car1(player.ent, cam1);
