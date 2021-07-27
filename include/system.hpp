@@ -16,6 +16,24 @@
 
 
 
+class time_system {
+private:
+  time_system() { }
+  ~time_system() { }
+
+  static float current_time__,
+    next_time__,
+    delta_time__;
+
+public:
+  static float delta_time() { return delta_time__; }
+  static float time() { return SDL_GetTicks() / 1000.0f; }
+
+  static void init();
+  static void work();
+
+};
+
 class event_system {
 private:
   event_system() { }
@@ -89,24 +107,6 @@ public:
 
   static void add_picture(const picture pic) { render_pictures__.push(pic); }
   static void quit() { SDL_DestroyTexture(main_pictures__); }
-
-  static void init();
-  static void work();
-
-};
-
-class time_system {
-private:
-  time_system() { }
-  ~time_system() { }
-
-  static float current_time__,
-    next_time__,
-    delta_time__;
-
-public:
-  static float delta_time() { return delta_time__; }
-  static float time() { return SDL_GetTicks() / 1000.0f; }
 
   static void init();
   static void work();
