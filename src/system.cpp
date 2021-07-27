@@ -3,16 +3,19 @@
 
 
 
-bool event_system::running__;
+bool event_system::running__, event_system::pause__;
+float event_system::counter__;
 Uint8* event_system::key__;
 SDL_Event event_system::event__;
 
 void event_system::init() {
   key__ = 0;
   running__ = true;
+  pause__ = false;
 }
 
 void event_system::work() {
+  const bool empty_counter = counter__ <= 0.0f;
 
   while (SDL_PollEvent(&event__)) {
 
@@ -22,6 +25,15 @@ void event_system::work() {
   }
 
   key__ = const_cast<Uint8*>(SDL_GetKeyboardState(nullptr));
+
+  if (key__[SDL_SCANCODE_ESCAPE] && empty_counter) {
+    pause__ = !pause__;
+    std::cout << std::boolalpha << "pause: " << pause__ << std::endl;
+    counter__ = 1.0f;
+  }
+
+  if (!empty_counter)
+    counter__ -= time_system::delta_time();
 
 }
 

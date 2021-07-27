@@ -324,8 +324,6 @@ void game::play() {
   player.origin = tm.find_tile_xy('0');
   player.pos = player.origin;
 
-  std::cout << player.origin;
-
   cam.init();
 
   camera cam1(cam.xy_limit, cam.wh_limit, cam.window_wh, cam.ref_xy, cam.ref_wh);
@@ -333,9 +331,15 @@ void game::play() {
 
 
 
-  auto update = [&car1, &tm, &cam1] () {
+  auto update = [&car1, &tm, &cam1] {
     car1.update();
     tm.update(cam1);
+  };
+
+  auto work = [&update] {
+    update();
+    picture_system::work();
+    render_system::work();
   };
 
 
@@ -345,10 +349,8 @@ void game::play() {
     time_system::work();
     event_system::work();
 
-    update();
-
-    picture_system::work();
-    render_system::work();
+    if (!event_system::pause())
+      work();
 
   }
 
