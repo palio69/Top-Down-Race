@@ -120,8 +120,8 @@ struct { // map
 
   const tile origin_tile = { '0', { 32, 0, 16, 16 } },
     finish_tile = { 'x', { 32, 0, 16, 16 } },
-    tile1 = { '.', { 16, 0, 16, 16 } },
-    tile2 = { '-', { 32, 0, 16, 16 } };
+    grass_tile = { '.', { 16, 0, 16, 16 } },
+    street_tile = { '-', { 32, 0, 16, 16 } };
 
 } const map;
 
@@ -318,8 +318,8 @@ void game::play() {
   tm.add_to_map(map.tiles);
   tm.add_tile(map.origin_tile);
   tm.add_tile(map.finish_tile);
-  tm.add_tile(map.tile1);
-  tm.add_tile(map.tile2);
+  tm.add_tile(map.grass_tile);
+  tm.add_tile(map.street_tile);
 
   player.origin = tm.find_tile_xy('0');
   player.pos = player.origin;
