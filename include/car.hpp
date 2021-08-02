@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <SDL2/SDL.h>
+#include <utils.hpp>
 #include <system.hpp>
 #include <vec2f.hpp>
 #include <picture.hpp>

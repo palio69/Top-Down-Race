@@ -40,11 +40,6 @@ void car::update() {
 
     up_xor_down = ((up || down) && !(up && down));
 
-  auto to_radians = [] (const double angle) {
-    const double pi = 3.141592654;
-    return angle * pi / 180;
-  };
-
   const float final_acceleration = acceleration * delta_time * friction * booster,
     final_deceleration = deceleration * delta_time * friction * booster,
 
