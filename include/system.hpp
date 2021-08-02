@@ -2,14 +2,15 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <stack>
 #include <queue>
-#include <cstddef>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 #include <picture.hpp>
+#include <camera.hpp>
 #include <ECS/ECS.hpp>
 #include <ECS/subsystem.hpp>
 #include <ECS/component.hpp>
@@ -48,6 +49,27 @@ public:
   static bool running() { return running__; }
   static bool pause() { return pause__; }
   static const Uint8* key() { return key__; }
+
+  static void init();
+  static void work();
+
+};
+
+class camera_system {
+private:
+  camera_system() { }
+  ~camera_system() { }
+
+  static std::vector<camera> cameras__;
+  static camera* current_camera__;
+  static unsigned index__;
+
+  static bool static_camera__;
+  static key stop_camera__;
+
+public:
+  static unsigned add_camera(const camera& cam);
+  static void switch_to(const unsigned index);
 
   static void init();
   static void work();

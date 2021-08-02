@@ -19,7 +19,8 @@ void time_system::work() {
   current_time__ = next_time__;
 }
 
-bool event_system::running__, event_system::pause__;
+bool event_system::running__,
+  event_system::pause__;
 float event_system::counter__;
 Uint8* event_system::key__;
 SDL_Event event_system::event__;
@@ -50,6 +51,46 @@ void event_system::work() {
 
   if (!empty_counter)
     counter__ -= time_system::delta_time();
+
+}
+
+
+
+std::vector<camera> camera_system::cameras__;
+camera* camera_system::current_camera__;
+unsigned camera_system::index__;
+bool camera_system::static_camera__;
+key camera_system::stop_camera__;
+
+unsigned camera_system::add_camera(const camera& cam) {
+  cameras__.push_back(cam);
+  return index__++;
+}
+
+void camera_system::switch_to(const unsigned index) {
+  if (index > index__) {
+    std::cout << "ERROR: could not find camera" << std::endl;
+    return;
+  }
+
+  current_camera__ = &(cameras__[index]);
+}
+
+void camera_system::init() {
+  current_camera__ = nullptr;
+  index__  = 0;
+  static_camera__ = false;
+  stop_camera__ = KEY(X);
+}
+
+void camera_system::work() {
+  const Uint8* keys = event_system::key();
+
+  if (keys[stop_camera__])
+    static_camera__ = true;
+
+  if (!static_camera__)
+    current_camera__.update();
 
 }
 
